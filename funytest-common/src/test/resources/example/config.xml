@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<test-config>
+	<properties>
+		<pid>20101213</pid>
+	</properties>
+		
+	<test-case id="TC01" desc="测试用例一" >
+		<case-properties>
+			<tableIndex>00</tableIndex>
+		</case-properties>
+		<!-- 测试链 -->
+		<test-align index="0" doClean="false">
+			<test-before>
+				<!-- 数据库准备 -->
+				<db-init table="USER" >
+					
+				</db-init>
+			</test-before>
+			
+			<test-execute>
+				<api class="" method="">
+					<method-args type="int">1</method-args>
+					<method-args>"the end"</method-args>
+				</api>
+			</test-execute>
+			
+			<test-expect>
+				<api-expect class="com.app.xxx.class">
+					<property name="username" type="int">1</property>
+				</api-expect>
+				
+				<!-- 数据库期望 -->
+				<db-expect table="USER">
+					1,2,3,4,5,6
+				</db-expect>
+			</test-expect>
+		</test-align>
+	</test-case>
+	
+	
+</test-config>
