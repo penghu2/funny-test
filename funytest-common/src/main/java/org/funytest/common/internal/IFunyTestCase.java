@@ -24,6 +24,4 @@ public interface IFunyTestCase {
 	 */
 	public IConfiguration getIConfiguration(); 
 	
-	public TestContext getTextContext();
-	
 }

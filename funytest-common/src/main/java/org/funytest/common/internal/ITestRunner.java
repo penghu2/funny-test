@@ -6,5 +6,5 @@ package org.funytest.common.internal;
  */
 public interface ITestRunner {
 	
-	public void run(IFunyTestCase testcase);
+	public void run(TestContext context);
 }
