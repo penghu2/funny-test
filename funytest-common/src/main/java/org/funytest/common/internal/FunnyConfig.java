@@ -6,7 +6,9 @@ import java.util.Properties;
 
 import org.apache.commons.lang3.StringUtils;
 import org.funytest.common.internal.dataprovider.IDataProvider;
+import org.funytest.common.internal.finder.FunnyTestAnnotationFinder;
 import org.funytest.common.internal.method.IFunnyTestMethodFactory;
+import org.funytest.common.internal.runner.DefaultRunner;
 import org.testng.internal.ClassHelper;
 
 /**
@@ -50,7 +52,7 @@ public class FunnyConfig implements IConfiguration {
 			//TO_DO 抛异常
 			if (this.runner == null){}
 		} else {
-			
+			this.runner = new DefaultRunner();
 		}
 	}
 	
@@ -64,7 +66,7 @@ public class FunnyConfig implements IConfiguration {
 			//TO_DO 抛异常
 			if (this.finder == null){}
 		} else{
-			
+			this.finder = new FunnyTestAnnotationFinder();
 		}
 	}
 	
