@@ -1,8 +1,12 @@
 package org.funytest.common.internal.method;
 
-public interface FunnyTestMethod {
+import java.lang.reflect.Method;
+
+public interface IFunnyTestMethod {
 
 	public int order = 0;
+	
+	public void init(Method m);
 	
 	/**
 	 * 执行方法

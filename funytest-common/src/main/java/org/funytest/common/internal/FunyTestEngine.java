@@ -1,9 +1,14 @@
 package org.funytest.common.internal;
 
+import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
 import java.util.Iterator;
+import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 
+import org.funytest.common.internal.method.IFunnyTestMethod;
+import org.funytest.common.internal.method.IFunnyTestMethodFactory;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.TestInstance;
@@ -17,6 +22,14 @@ public abstract class FunyTestEngine implements IFunyTestCase {
 	/* 配置信息 */
 	private IConfiguration config;
 	
+	/* funnyTestMethod 工厂类 */
+	private IFunnyTestMethodFactory funyTestMethodFactory;
+	
+	/* funnyTestMethod map */
+	private Map<Class<? extends Annotation>, IFunnyTestMethod> funnyTestMethodMap;
+	
+	private List<Class<? extends Annotation>> annotationClassList;
+	
 	/**
 	 * 执行方法
 	 */
@@ -29,14 +42,34 @@ public abstract class FunyTestEngine implements IFunyTestCase {
 	 */
 	@BeforeClass
 	public void init(){
+		/* 初始化变量 */
+		annotationClassList = new LinkedList<Class<? extends Annotation>>();
 		
 		//首先初始化配置信息
 		this.config = this.initConfig();
 		config.init(this.getConfigFiles());
 		
 		//扫描注解方法，并放置到配置中
+		initAnnotationMethods();
+		
+		
+	}
+		
+	private void initAnnotationMethods(){
+		
+		IAnnotationMethodFinder finder = this.config.getAnnotationFinder();
+		/* 初始化特定方法 */
+		this.funnyTestMethodMap = finder.findFunnyTestMethodMap(this.getClass(), getAnnotationClassList(),funyTestMethodFactory);
 	}
 
+	/**
+	 * 
+	 * @return
+	 */
+	protected void register(Class<? extends Annotation> cls){
+		this.annotationClassList.add(cls);
+	} 
+	
 	/**
 	 * 数据驱动
 	 * @param m 测试方法
@@ -66,4 +99,30 @@ public abstract class FunyTestEngine implements IFunyTestCase {
 	public IConfiguration getIConfiguration(){
 		return this.config;
 	}
+
+	public IFunnyTestMethodFactory getFunyTestMethodFactory() {
+		return funyTestMethodFactory;
+	}
+
+	public void setFunyTestMethodFactory(IFunnyTestMethodFactory funyTestMethodFactory) {
+		this.funyTestMethodFactory = funyTestMethodFactory;
+	}
+
+	public Map<Class<? extends Annotation>, IFunnyTestMethod> getFunnyTestMethodMap() {
+		return funnyTestMethodMap;
+	}
+
+	public void setFunnyTestMethodMap(Map<Class<? extends Annotation>, IFunnyTestMethod> funnyTestMethodMap) {
+		this.funnyTestMethodMap = funnyTestMethodMap;
+	}
+
+	public List<Class<? extends Annotation>> getAnnotationClassList() {
+		return annotationClassList;
+	}
+
+	public void setAnnotationClassList(List<Class<? extends Annotation>> annotationClassList) {
+		this.annotationClassList = annotationClassList;
+	}
+	
+	
 }

@@ -17,4 +17,10 @@ public interface IFunyTestMethod {
 	 * @return
 	 */
 	public String getExecuteInfo();
+	
+	/**
+	 * 获取名称
+	 * @return
+	 */
+	public String getName();
 }

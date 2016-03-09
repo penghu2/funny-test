@@ -4,7 +4,7 @@ import java.lang.annotation.Annotation;
 import java.util.List;
 
 import org.funytest.common.internal.dataprovider.IDataProvider;
-import org.funytest.common.internal.method.FunnyTestMethod;
+import org.funytest.common.internal.method.IFunnyTestMethod;
 
 /**
  * 配置类，相关配置信息全部放在这个里面，主要的配置信息包括：
@@ -41,12 +41,4 @@ public interface IConfiguration {
 	public void setDataProvider(IDataProvider dataProvider);
 	public IDataProvider getDataProvider();
 	
-	
-	/**
-	 * 获取特定注解的methd方法
-	 */
-	public void addFunnyTestMethod(Class<? extends Annotation> clz, FunnyTestMethod m);
-	public List<FunnyTestMethod> getMethodByAnnotation(Class<? extends Annotation> clz);
-	
-
 }
