@@ -6,6 +6,7 @@ import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.Properties;
 
 import org.funytest.common.internal.method.IFunnyTestMethod;
 import org.funytest.common.internal.method.IFunnyTestMethodFactory;
@@ -19,16 +20,19 @@ import org.testng.annotations.TestInstance;
  */
 public abstract class FunyTestEngine implements IFunyTestCase {
 
-	/* 配置信息 */
-	private IConfiguration config;
+	protected String configfile = "src/test/resource/config/funny-test.config";
+	
+	/* 配置信息类 */
+	protected IConfiguration config;
 	
 	/* funnyTestMethod 工厂类 */
-	private IFunnyTestMethodFactory funyTestMethodFactory;
+	protected IFunnyTestMethodFactory funyTestMethodFactory;
 	
 	/* funnyTestMethod map */
-	private Map<Class<? extends Annotation>, IFunnyTestMethod> funnyTestMethodMap;
+	protected Map<Class<? extends Annotation>, IFunnyTestMethod> funnyTestMethodMap;
 	
-	private List<Class<? extends Annotation>> annotationClassList;
+	/* 存储类 */
+	protected List<Class<? extends Annotation>> annotationClassList;
 	
 	/**
 	 * 执行方法
@@ -46,8 +50,10 @@ public abstract class FunyTestEngine implements IFunyTestCase {
 		annotationClassList = new LinkedList<Class<? extends Annotation>>();
 		
 		//首先初始化配置信息
-		this.config = this.initConfig();
-		config.init(this.getConfigFiles());
+		this.config = this.getConfig();
+		config.init();
+		
+		funyTestMethodFactory = this.config.getFunnyMethodFactory();
 		
 		//扫描注解方法，并放置到配置中
 		initAnnotationMethods();
@@ -87,7 +93,9 @@ public abstract class FunyTestEngine implements IFunyTestCase {
 	
 	public abstract String getTestMethodName();
 	
-	public abstract IConfiguration initConfig();
+	public IConfiguration getConfig(){
+		return new FunnyConfig(configfile);
+	}
 	
 	/**
 	 * 获取配置文件

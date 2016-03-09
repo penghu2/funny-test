@@ -2,9 +2,11 @@ package org.funytest.common.internal;
 
 import java.lang.annotation.Annotation;
 import java.util.List;
+import java.util.Properties;
 
 import org.funytest.common.internal.dataprovider.IDataProvider;
 import org.funytest.common.internal.method.IFunnyTestMethod;
+import org.funytest.common.internal.method.IFunnyTestMethodFactory;
 
 /**
  * 配置类，相关配置信息全部放在这个里面，主要的配置信息包括：
@@ -18,7 +20,7 @@ public interface IConfiguration {
 	/**
 	 * 初始化配置信息
 	 */
-	public void init(List<String> configFiles);
+	public void init();
 	
 	/**
 	 * 注解方法查询类的 set 和 get
@@ -32,7 +34,7 @@ public interface IConfiguration {
 	 * @return
 	 */
 	public ITestRunner getTestRunner();
-	public void setTestRunner(ITestRunner template);
+	public void setTestRunner(ITestRunner runner);
 	
 	
 	/**
@@ -41,4 +43,12 @@ public interface IConfiguration {
 	public void setDataProvider(IDataProvider dataProvider);
 	public IDataProvider getDataProvider();
 	
+	public IFunnyTestMethodFactory getFunnyMethodFactory();
+	
+	/**
+	 * 获取配置的值
+	 * @param name
+	 * @return
+	 */
+	public String getValue(String name);
 }
