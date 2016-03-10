@@ -1,10 +1,14 @@
-package org.funytest.common.internal;
+package org.funytest.common.model;
 
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Properties;
 
 import org.apache.commons.lang3.StringUtils;
+import org.funytest.common.internal.IAnnotationMethodFinder;
+import org.funytest.common.internal.IConfiguration;
+import org.funytest.common.internal.ITestRunner;
+import org.funytest.common.internal.dataprovider.DefaultXmlDataProvider;
 import org.funytest.common.internal.dataprovider.IDataProvider;
 import org.funytest.common.internal.finder.FunnyTestAnnotationFinder;
 import org.funytest.common.internal.method.IFunnyTestMethodFactory;
@@ -40,8 +44,29 @@ public class FunnyConfig implements IConfiguration {
 		initRunner(properties);
 		initFinder(properties);
 		initFactory(properties);
+		initDataProvider(properties);
 	}
 	
+	/**
+	 * 初始化数据驱动
+	 * @param properties
+	 */
+	@SuppressWarnings("unchecked")
+	protected void initDataProvider(Properties properties){
+		String className = properties.getProperty("DataProvider");
+		if (StringUtils.isBlank(className)){
+			this.dataProvider = new DefaultXmlDataProvider();
+			return;
+		}
+		
+		Class<IDataProvider> cls = (Class<IDataProvider>) ClassHelper.forName(className);
+		this.dataProvider = ClassHelper.newInstance(cls);
+	}
+	
+	/**
+	 * 初始化runner
+	 * @param properties
+	 */
 	@SuppressWarnings("unchecked")
 	protected void initRunner(Properties properties) {
 		String className = properties.getProperty("TestRunner");
@@ -56,6 +81,10 @@ public class FunnyConfig implements IConfiguration {
 		}
 	}
 	
+	/**
+	 * 初始化annotation finder
+	 * @param properties
+	 */
 	@SuppressWarnings("unchecked")
 	protected void initFinder(Properties properties) {
 		String className = properties.getProperty("AnnotationFinder");
@@ -70,6 +99,10 @@ public class FunnyConfig implements IConfiguration {
 		}
 	}
 	
+	/**
+	 * 初始化method factory
+	 * @param properties
+	 */
 	@SuppressWarnings("unchecked")
 	protected void initFactory(Properties properties){
 		String className = properties.getProperty("FunnyMethodFactory");

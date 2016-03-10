@@ -10,6 +10,8 @@ import java.util.Properties;
 
 import org.funytest.common.internal.method.IFunnyTestMethod;
 import org.funytest.common.internal.method.IFunnyTestMethodFactory;
+import org.funytest.common.model.FunnyConfig;
+import org.funytest.common.model.TestContext;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.TestInstance;
@@ -57,8 +59,6 @@ public abstract class FunyTestEngine implements IFunyTestCase {
 		
 		//扫描注解方法，并放置到配置中
 		initAnnotationMethods();
-		
-		
 	}
 		
 	private void initAnnotationMethods(){
@@ -83,8 +83,8 @@ public abstract class FunyTestEngine implements IFunyTestCase {
 	 * @return
 	 */
 	@DataProvider(name = "FunyTestDataProvider")
-	public Iterator<?> getData(Method m, @TestInstance Object instance){
-		return this.config.getDataProvider().getData(m, instance);
+	public Iterator<TestContext> getData(Method m, @TestInstance Object instance){
+		return this.config.getDataProvider().getData(m, this.getClass(), instance);
 	}
 	
 	/*==========================[待实现区域]=============================*/

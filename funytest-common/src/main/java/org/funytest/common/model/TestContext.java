@@ -1,15 +1,16 @@
 package org.funytest.common.model;
 
+import org.funytest.common.internal.IFunyTestCase;
+
 /**
- * 测试上下文类，承载着整个测试的上下文信息
+ * 测试上下文类，存储测试的上下文数据
  * @author hupeng
- * 
+ *
  */
 public class TestContext {
 	
-	public enum Status{
-		parsing,
-		executing,
-		end;
-	}
+	/* 测试实例 */
+	IFunyTestCase testInstance;
+	
+	
 }

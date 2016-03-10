@@ -1,7 +1,7 @@
 package org.funytest.common.internal.runner;
 
 import org.funytest.common.internal.ITestRunner;
-import org.funytest.common.internal.TestContext;
+import org.funytest.common.model.TestContext;
 
 public class DefaultRunner implements ITestRunner {
 

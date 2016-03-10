@@ -1,5 +1,7 @@
 package org.funytest.common.internal;
 
+import org.funytest.common.model.TestContext;
+
 /**
  * 测试用例
  * @author xiuzhu.hp
