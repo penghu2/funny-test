@@ -54,6 +54,8 @@ public class DefaultXmlDataProvider implements IDataProvider, Iterator<TestConte
 	}
 
 	public TestContext next() {
+		Element element = (Element)testCaseElements.iterator().next();
+		
 		
 		return null;
 	}
@@ -81,5 +83,11 @@ public class DefaultXmlDataProvider implements IDataProvider, Iterator<TestConte
 		//return fileFullName;
 		
 		return "";
+	}
+
+
+	public void remove() {
+		// TODO Auto-generated method stub
+		
 	}
 }

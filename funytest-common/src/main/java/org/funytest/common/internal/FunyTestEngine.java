@@ -8,6 +8,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Properties;
 
+import org.dom4j.DocumentException;
 import org.funytest.common.internal.method.IFunnyTestMethod;
 import org.funytest.common.internal.method.IFunnyTestMethodFactory;
 import org.funytest.common.model.FunnyConfig;
@@ -84,7 +85,13 @@ public abstract class FunyTestEngine implements IFunyTestCase {
 	 */
 	@DataProvider(name = "FunyTestDataProvider")
 	public Iterator<TestContext> getData(Method m, @TestInstance Object instance){
-		return this.config.getDataProvider().getData(m, this.getClass(), instance);
+		try {
+			return this.config.getDataProvider().getData(m, this.getClass(), instance);
+		} catch (DocumentException e) {
+			// TODO 说明解析失败了
+			e.printStackTrace();
+		}
+		return null;
 	}
 	
 	/*==========================[待实现区域]=============================*/

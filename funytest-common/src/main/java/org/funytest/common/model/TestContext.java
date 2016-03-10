@@ -1,5 +1,7 @@
 package org.funytest.common.model;
 
+import java.util.List;
+
 import org.funytest.common.internal.IFunyTestCase;
 
 /**
@@ -10,7 +12,9 @@ import org.funytest.common.internal.IFunyTestCase;
 public class TestContext {
 	
 	/* 测试实例 */
-	IFunyTestCase testInstance;
+	public IFunyTestCase testInstance;
+	
+	private List<TestCase> testcases;
 	
 	
 }
