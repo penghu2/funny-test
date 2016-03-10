@@ -30,7 +30,7 @@ public class FunnyConfig implements IConfiguration {
 	
 	public FunnyConfig(String configfile){
 		InputStream in = getClass().getResourceAsStream(configfile);
-		Properties properties = new Properties();
+		this.properties = new Properties();
 		try {
 			properties.load(in);
 			

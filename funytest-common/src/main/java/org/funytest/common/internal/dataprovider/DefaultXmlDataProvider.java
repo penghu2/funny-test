@@ -1,8 +1,14 @@
 package org.funytest.common.internal.dataprovider;
 
+import java.io.File;
 import java.lang.reflect.Method;
 import java.util.Iterator;
+import java.util.List;
 
+import org.dom4j.Document;
+import org.dom4j.DocumentException;
+import org.dom4j.Element;
+import org.dom4j.io.SAXReader;
 import org.funytest.common.internal.IFunyTestCase;
 import org.funytest.common.model.TestContext;
 
@@ -13,19 +19,36 @@ import org.funytest.common.model.TestContext;
  */
 public class DefaultXmlDataProvider implements IDataProvider, Iterator<TestContext> {
 
-	public Iterator<TestContext> getData(Method m, Class<? extends IFunyTestCase> cls, Object instance) {
+	private Document document;
+	private List testCaseElements;
+	
+	public Iterator<TestContext> getData(Method m, Class<? extends IFunyTestCase> cls, Object instance) throws DocumentException {
 		
 		/* 获取配置文件路径 */
 		String configFilePath = getConfigFilePath(m, cls);
 		
 		/* 解析xml配置文件 */
-		parseXml(configFilePath);
+		SAXReader reader = new SAXReader();
+		
+		try {
+			document = reader.read(new File(configFilePath));
+			
+			//获取根节点元素对象  
+	        Element root = document.getRootElement(); 
+	        
+	        testCaseElements = root.elements("test-case");
+		} catch (DocumentException e) {
+			e.printStackTrace();
+			throw e;
+		}  
 		
 		return this;
 	}
 	
 	
 	public boolean hasNext() {
+		if (testCaseElements != null && testCaseElements.size()>0)
+			testCaseElements.iterator().hasNext();
 		
 		return false;
 	}
@@ -51,7 +74,7 @@ public class DefaultXmlDataProvider implements IDataProvider, Iterator<TestConte
 		String relativePath = "src/test/java/"
                 + this.getClass().getPackage().getName().replace(".", "/") + "/";
 		
-		String filename = this.getClass().getSimpleName() + "." + m.getName() + ".yaml";
+		String filename = this.getClass().getSimpleName() + "." + m.getName() + ".xml";
 		
 		String fileFullName = relativePath + filename;
 		
