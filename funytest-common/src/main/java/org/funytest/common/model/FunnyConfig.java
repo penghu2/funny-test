@@ -2,7 +2,10 @@ package org.funytest.common.model;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.Map;
 import java.util.Properties;
+
+import javax.sql.DataSource;
 
 import org.apache.commons.lang3.StringUtils;
 import org.funytest.common.internal.IAnnotationMethodFinder;
@@ -27,6 +30,7 @@ public class FunnyConfig implements IConfiguration {
 	private IDataProvider dataProvider;
 	private IFunnyTestMethodFactory funnyMethodFactory;
 	private Properties properties;
+	private Map<String, DataSource> datasourceMap;
 	
 	public FunnyConfig(String configfile){
 		InputStream in = getClass().getResourceAsStream(configfile);
@@ -45,6 +49,15 @@ public class FunnyConfig implements IConfiguration {
 		initFinder(properties);
 		initFactory(properties);
 		initDataProvider(properties);
+		initDataSource(properties);
+	}
+	
+	/**
+	 * 初始化数据驱动
+	 * @param properties
+	 */
+	public void initDataSource(Properties properties){
+		
 	}
 	
 	/**
@@ -159,5 +172,10 @@ public class FunnyConfig implements IConfiguration {
 
 	public void setProperties(Properties properties) {
 		this.properties = properties;
+	}
+
+	public DataSource getDataSource(String tableName) {
+		
+		return null;
 	}
 }

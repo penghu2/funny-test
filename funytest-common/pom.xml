@@ -33,5 +33,25 @@
 	  <artifactId>dom4j</artifactId>
 	  <version>1.6.1</version>
 	</dependency>
+	<dependency>
+		<groupId>org.testng</groupId>
+	    <artifactId>com.springsource.org.testng</artifactId>
+		<version>6.4.0</version>
+	</dependency>
+	<dependency>
+		<groupId>org.springframework</groupId>
+		<artifactId>spring-core</artifactId>
+		<version>3.2.4.RELEASE</version>
+	</dependency>
+	<dependency>
+		<groupId>org.springframework</groupId>
+		<artifactId>spring-test</artifactId>
+		<version>3.2.4.RELEASE</version>
+	</dependency>
+	<dependency>
+		<groupId>org.springframework</groupId>
+		<artifactId>spring-context-support</artifactId>
+		<version>3.2.4.RELEASE</version>
+	</dependency>
   </dependencies>
 </project>

@@ -1,11 +1,8 @@
 package org.funytest.common.internal;
 
-import java.lang.annotation.Annotation;
-import java.util.List;
-import java.util.Properties;
+import javax.sql.DataSource;
 
 import org.funytest.common.internal.dataprovider.IDataProvider;
-import org.funytest.common.internal.method.IFunnyTestMethod;
 import org.funytest.common.internal.method.IFunnyTestMethodFactory;
 
 /**
@@ -21,6 +18,8 @@ public interface IConfiguration {
 	 * 初始化配置信息
 	 */
 	public void init();
+	
+	public DataSource getDataSource(String tableName);
 	
 	/**
 	 * 注解方法查询类的 set 和 get

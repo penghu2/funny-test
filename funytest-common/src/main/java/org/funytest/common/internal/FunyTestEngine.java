@@ -13,6 +13,8 @@ import org.funytest.common.internal.method.IFunnyTestMethod;
 import org.funytest.common.internal.method.IFunnyTestMethodFactory;
 import org.funytest.common.model.FunnyConfig;
 import org.funytest.common.model.TestContext;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.testng.AbstractTestNGSpringContextTests;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.TestInstance;
@@ -21,7 +23,8 @@ import org.testng.annotations.TestInstance;
  * FunnyTest 测试核心引擎类
  * @author xiuzhu.hp
  */
-public abstract class FunyTestEngine implements IFunyTestCase {
+@ContextConfiguration
+public class FunyTestEngine extends AbstractTestNGSpringContextTests implements IFunyTestCase {
 
 	protected String configfile = "src/test/resource/config/funny-test.config";
 	
@@ -95,20 +98,13 @@ public abstract class FunyTestEngine implements IFunyTestCase {
 	}
 	
 	/*==========================[待实现区域]=============================*/
-	
-	public abstract Class<? extends IFunyTestCase> getTestClass();
-	
-	public abstract String getTestMethodName();
+
 	
 	public IConfiguration getConfig(){
 		return new FunnyConfig(configfile);
 	}
 	
-	/**
-	 * 获取配置文件
-	 * @return
-	 */
-	public abstract List<String> getConfigFiles();
+	
 	
 	/*==========================[配置相关区域]=============================*/
 	public IConfiguration getIConfiguration(){
@@ -138,6 +134,13 @@ public abstract class FunyTestEngine implements IFunyTestCase {
 	public void setAnnotationClassList(List<Class<? extends Annotation>> annotationClassList) {
 		this.annotationClassList = annotationClassList;
 	}
+
+	public void setConfiguration(IConfiguration config) {
+		
+		this.config = config;
+	}
+
+	
 	
 	
 }
