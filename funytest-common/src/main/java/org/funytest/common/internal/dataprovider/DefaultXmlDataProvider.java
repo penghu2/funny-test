@@ -11,6 +11,7 @@ import org.dom4j.Document;
 import org.dom4j.DocumentException;
 import org.dom4j.Element;
 import org.dom4j.io.SAXReader;
+import org.funytest.common.internal.IConfiguration;
 import org.funytest.common.internal.IFunyTestCase;
 import org.funytest.common.model.TestCase;
 import org.funytest.common.model.TestContext;
@@ -167,9 +168,9 @@ public class DefaultXmlDataProvider implements IDataProvider, Iterator<TestConte
 			/* teststep是一个特殊的群体，因此这里会比较复杂 */
 			String name=item.getName();
 			
-			
+			IConfiguration config = ((IFunyTestCase)this.instance).getIConfiguration();
 			if (testStepFactory==null) testStepFactory = new TestStepFactory();
-			align.addTestStep(testStepFactory.buildStep(name, item));
+			align.addTestStep(testStepFactory.buildStep(name, item, config));
 		}
 	}
 	

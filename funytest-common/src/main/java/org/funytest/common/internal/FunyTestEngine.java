@@ -20,10 +20,9 @@ import org.testng.annotations.DataProvider;
 import org.testng.annotations.TestInstance;
 
 /**
- * FunnyTest 测试核心引擎类
+ * FunnyTest 测试核心引擎类, 基于spring 上下文进行
  * @author xiuzhu.hp
  */
-@ContextConfiguration
 public class FunyTestEngine extends AbstractTestNGSpringContextTests implements IFunyTestCase {
 
 	protected String configfile = "src/test/resource/config/funny-test.config";
