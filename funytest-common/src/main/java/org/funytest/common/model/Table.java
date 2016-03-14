@@ -1,11 +1,11 @@
 package org.funytest.common.model;
 
+import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
 import javax.sql.DataSource;
-
-import org.funytest.common.sql.TableHandlerFactory;
 
 /**
  * 数据库表数据映射模型
@@ -35,8 +35,6 @@ public class Table {
 	/* 数据源 */
 	private DataSource datasource;
 	
-	private TableHandlerFactory handlerFactory = new TableHandlerFactory();
-	
 	/* 
 	 * 标识位，用于标识关键字
 	 * C： where 条件关键字
@@ -44,14 +42,48 @@ public class Table {
 	 * Y： 标识着需要校验的位置
 	 * N:  标识着不需要校验 
 	 */
-	private Map<String, String> Flag;
-	
+	private Map<String, String> flagMap;
+		
 	/* 表格数据 */
 	private List<Map<String, String>> datalist;
 	
-	
-	public void execute(){
+	/**
+	 * 添加flag
+	 * @param columnName
+	 * @param flagVal
+	 */
+	public void addFlag(String columnName, String flagVal){
+		if(flagMap==null){
+			flagMap = new HashMap<String, String>();
+		}
 		
+		flagMap.put(columnName, flagVal);
+	}
+	
+	/**
+	 * 获取对应的flag
+	 * @param columnName
+	 * @return
+	 */
+	public String getFlagByName(String columnName){
+		
+		if(flagMap.containsKey(columnName)){
+			return flagMap.get(columnName);
+		}
+		
+		return null;
+	}
+	
+	/**
+	 * 添加数据集合
+	 * @param dataMap 数据集合
+	 */
+	public void addData(Map<String, String> dataMap){
+		if (datalist== null){
+			datalist = new LinkedList<Map<String, String>>();
+		}
+		
+		datalist.add(dataMap);
 	}
 	
 	/*====================[配置相关区域]=========================*/
@@ -95,12 +127,12 @@ public class Table {
 		this.datasource = datasource;
 	}
 
-	public Map<String, String> getFlag() {
-		return Flag;
+	public Map<String, String> getFlagMap() {
+		return flagMap;
 	}
 
-	public void setFlag(Map<String, String> flag) {
-		Flag = flag;
+	public void setFlagMap(Map<String, String> flagMap) {
+		this.flagMap = flagMap;
 	}
 
 	public List<Map<String, String>> getDatalist() {

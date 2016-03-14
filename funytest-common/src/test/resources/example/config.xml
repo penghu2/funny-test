@@ -12,9 +12,9 @@
 		<test-align index="0" doClean="false">
 			<test-init>
 				<!-- 数据库准备 -->
-				<table name="sys_user" >
-					<id type="int">1</id>
-					<organization_id type="bigint">10001</organization_id>
+				<table name="sys_user" group = "group1">
+					<id>1</id>
+					<organization_id>10001</organization_id>
 					<username F="C">xiuzhu.hp</username>
 					<password>xxxxxx</password>
 					<salt>123456789</salt>
