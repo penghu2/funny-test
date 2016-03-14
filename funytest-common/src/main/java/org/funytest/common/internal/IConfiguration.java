@@ -19,7 +19,7 @@ public interface IConfiguration {
 	 */
 	public void init();
 	
-	public DataSource getDataSource(String tableName);
+	public DataSource getDataSource(String tableName, String ...groups);
 	
 	/**
 	 * 注解方法查询类的 set 和 get

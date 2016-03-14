@@ -56,6 +56,8 @@ public class TestStepFactory {
 				//构造table
 				Table table;
 				String name = item.attributeValue("name");
+				String group = item.attributeValue("group");
+				String[] groups = group == null ? null : group.split(",");
 				
 				/* 判断是否已经存在这张表，如果存在，就不在更新flag，直接取表出来进行 */
 				boolean doUpdateFlag = false;
@@ -67,8 +69,9 @@ public class TestStepFactory {
 					table = new Table();
 					
 					table.setName(name);
-					table.setDatasource(config.getDataSource(name));
+					table.setDatasource(config.getDataSource(name, groups));
 					table.setType(Table.Type.insert);
+					table.setGroups(groups);
 					
 					doUpdateFlag = true;
 				}
@@ -76,7 +79,10 @@ public class TestStepFactory {
 				/* 解析table，这个过程会比较痛苦 */
 				addTableData(item, table, doUpdateFlag);
 				
-				step.addTable(table);
+				/* 如果不存在，则添加表 */
+				if (doUpdateFlag){
+					step.addTable(table);
+				}
 			}
 		}
 		
@@ -101,6 +107,7 @@ public class TestStepFactory {
 			String flag = item.attributeValue("F");
 			String value = item.getStringValue();
 			
+			/* 添加标识位，如果表已经存在，则不需要添加，不存在就添加 */
 			if (StringUtils.isNotBlank(flag) && doUpdateFlag){
 				table.addFlag(colName, flag);
 			}

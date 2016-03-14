@@ -21,7 +21,7 @@ import org.funytest.common.utils.CollectionUtil;
 /**
  * 默认的xml解析datarpovider
  * @author hupeng
- * @qq 623158938
+ * qq号码 623158938
  */
 public class DefaultXmlDataProvider implements IDataProvider, Iterator<TestContext> {
 
@@ -182,16 +182,11 @@ public class DefaultXmlDataProvider implements IDataProvider, Iterator<TestConte
 	 */
 	protected String getConfigFilePath(Method m, Class<? extends IFunyTestCase> cls){
 		
-		String relativePath = "src/test/java/"
-                + this.getClass().getPackage().getName().replace(".", "/") + "/";
-		
 		String filename = this.getClass().getSimpleName() + "." + m.getName() + ".xml";
 		
-		String fileFullName = relativePath + filename;
-		
-		//return fileFullName;
-		
-		return "";
+		String path = this.getClass().getResource(filename).getPath();
+			
+		return path;
 	}
 
 

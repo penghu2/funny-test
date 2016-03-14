@@ -32,6 +32,9 @@ public class Table {
 	/* 表格的执行类型 */
 	private Type type;
 	
+	private String groups[];
+	
+
 	/* 数据源 */
 	private DataSource datasource;
 	
@@ -141,6 +144,14 @@ public class Table {
 
 	public void setDatalist(List<Map<String, String>> datalist) {
 		this.datalist = datalist;
+	}
+	
+	public String[] getGroups() {
+		return groups;
+	}
+
+	public void setGroups(String[] groups) {
+		this.groups = groups;
 	}
 }
 

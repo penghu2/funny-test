@@ -174,7 +174,7 @@ public class FunnyConfig implements IConfiguration {
 		this.properties = properties;
 	}
 
-	public DataSource getDataSource(String tableName) {
+	public DataSource getDataSource(String tableName, String ...groups) {
 		
 		return null;
 	}
