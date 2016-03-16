@@ -73,8 +73,9 @@ public class DefaultXmlDataProvider implements IDataProvider, Iterator<Object> {
 	}
 	
 	/**
-	 * 通用属性
-	 * @param properties
+	 * 通用属性的替换与解析
+	 * @param map 用于存储替换对象
+	 * @param properties  xml 中的 "properties" 结点
 	 */
 	private void initCommonProperties(Map<String, String> map, Element properties){
 		
@@ -120,7 +121,9 @@ public class DefaultXmlDataProvider implements IDataProvider, Iterator<Object> {
 	}
 	
 	/**
-	 * 预处理逻辑，替换原有变量
+	 * 
+	 * @param ele  "test-case" 结点
+	 * @param rep  "里面会有需要替换的值"
 	 */
 	private void replace(Element ele, Map<String, String> rep){
 		
@@ -200,7 +203,6 @@ public class DefaultXmlDataProvider implements IDataProvider, Iterator<Object> {
 
 
 	public void remove() {
-		// TODO Auto-generated method stub
 		
 	}
 	
