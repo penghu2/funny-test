@@ -94,7 +94,7 @@ public class FunyTestEngine extends AbstractTestNGSpringContextTests implements 
 	 * @return
 	 */
 	@DataProvider(name = "FunyTestDataProvider")
-	public Iterator<TestContext> getData(Method m, @TestInstance Object instance){
+	public Iterator<?> getData(Method m, @TestInstance Object instance){
 		try {
 			initConfig();
 			return this.config.getDataProvider().getData(m, this.getClass(), instance);

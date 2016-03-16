@@ -1,5 +1,6 @@
 package org.funytest.common.internal.step;
 
+import java.text.ParseException;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
@@ -13,6 +14,8 @@ import org.funytest.common.model.teststep.ITestStep;
 import org.funytest.common.model.teststep.MethodTestStep;
 import org.funytest.common.utils.ObjectUtil;
 import org.testng.internal.ClassHelper;
+
+import com.alibaba.fastjson.JSON;
 
 public class MethodTestStepBuilder extends AbstractStepBuilder {
 	
@@ -91,9 +94,22 @@ public class MethodTestStepBuilder extends AbstractStepBuilder {
 			String value = ((Element)subElement).getText();
 			String type = ((Element)subElement).attributeValue("type");
 			
-			Object o = ObjectUtil.getObject(type, value);
-			params[index]=o;
+			Object o=null;
+			try {
+				o = ObjectUtil.getObject(type, value);
+			} catch (ParseException e) {
+				e.printStackTrace();
+			}
 			
+			if (o == null){
+				/* 基本类型转换失败的话，就采用json序列化 */
+				Class cls = ClassHelper.forName(type);
+				if (cls != null){
+					o = JSON.parseObject(value, cls);
+				}
+			}
+			
+			params[index]=o;
 			index++;
 		}
 		
