@@ -40,6 +40,8 @@ public class InitTestStep implements ITestStep {
 	}
 	
 	public boolean dohave(String tableName){
+		if (tables==null) return false;
+		
 		for (Table tb : tables) {
 			if (tableName.equals(tb.getName())) {
 				return true;

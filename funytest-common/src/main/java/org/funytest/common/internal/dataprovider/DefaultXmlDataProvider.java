@@ -23,12 +23,15 @@ import org.funytest.common.utils.CollectionUtil;
  * @author hupeng
  * qq号码 623158938
  */
-public class DefaultXmlDataProvider implements IDataProvider, Iterator<TestContext> {
+public class DefaultXmlDataProvider implements IDataProvider, Iterator<Object> {
 
 	private Document document;
 	
 	/* testcase节点集合 */
 	private List<Element> testCaseElements;
+	
+	/* 解析索引 */
+	private int readIndex=0;
 	
 	/* 通用属性 */
 	private Map<String, String> swapMaps;
@@ -41,7 +44,7 @@ public class DefaultXmlDataProvider implements IDataProvider, Iterator<TestConte
 	private TestStepFactory testStepFactory;
 	
 	@SuppressWarnings("unchecked")
-	public Iterator<TestContext> getData(Method m, Class<? extends IFunyTestCase> cls, Object instance) throws DocumentException {
+	public Iterator<?> getData(Method m, Class<? extends IFunyTestCase> cls, Object instance) throws DocumentException {
 		
 		this.instance = instance;
 		
@@ -90,9 +93,12 @@ public class DefaultXmlDataProvider implements IDataProvider, Iterator<TestConte
 		}
 	}
 	
-	public boolean hasNext() {
-		if (testCaseElements != null && testCaseElements.size()>0)
-			testCaseElements.iterator().hasNext();
+	public synchronized boolean hasNext() {
+		if (testCaseElements != null && testCaseElements.size()>0){
+			if (testCaseElements.size() - readIndex > 0){
+				return true;
+			}
+		}
 		
 		return false;
 	}
@@ -100,14 +106,17 @@ public class DefaultXmlDataProvider implements IDataProvider, Iterator<TestConte
 	/**
 	 * next 函数
 	 */
-	public TestContext next() {
-		Element element = (Element)testCaseElements.iterator().next();
+	public synchronized Object[] next() {
+		Element element = (Element)testCaseElements.get(readIndex);
+		readIndex++;
 		
 		//将element解析成为TestCase对象，这里面会涉及到变量的替换
 		TestContext context = new TestContext((IFunyTestCase) this.instance);
 		convert(element, context);
 		
-		return context;
+		Object[] res = new Object[1];
+		res[0] = context;
+		return res;
 	}
 	
 	/**
@@ -182,9 +191,9 @@ public class DefaultXmlDataProvider implements IDataProvider, Iterator<TestConte
 	 */
 	protected String getConfigFilePath(Method m, Class<? extends IFunyTestCase> cls){
 		
-		String filename = this.getClass().getSimpleName() + "." + m.getName() + ".xml";
+		String filename = cls.getSimpleName() + "." + m.getName() + ".xml";
 		
-		String path = this.getClass().getResource(filename).getPath();
+		String path = cls.getResource(filename).getPath();
 			
 		return path;
 	}

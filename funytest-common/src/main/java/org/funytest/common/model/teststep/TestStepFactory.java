@@ -86,7 +86,7 @@ public class TestStepFactory {
 			}
 		}
 		
-		return null;
+		return step;
 	}
 	
 	/**

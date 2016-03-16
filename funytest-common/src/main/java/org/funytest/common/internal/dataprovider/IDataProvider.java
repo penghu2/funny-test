@@ -14,5 +14,5 @@ import org.funytest.common.model.TestContext;
  */
 public interface IDataProvider {
 	
-	public Iterator<TestContext> getData(Method m, Class<? extends IFunyTestCase> cls, Object instance) throws DocumentException;
+	public Iterator<?> getData(Method m, Class<? extends IFunyTestCase> cls, Object instance) throws DocumentException;
 }

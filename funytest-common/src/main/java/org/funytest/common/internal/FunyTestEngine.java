@@ -25,7 +25,7 @@ import org.testng.annotations.TestInstance;
  */
 public class FunyTestEngine extends AbstractTestNGSpringContextTests implements IFunyTestCase {
 
-	protected String configfile = "src/test/resource/config/funny-test.config";
+	public String configfile = "/config/funny-test.config";
 	
 	/* 配置信息类 */
 	protected IConfiguration config;
@@ -46,17 +46,25 @@ public class FunyTestEngine extends AbstractTestNGSpringContextTests implements 
 		this.config.getTestRunner().run(context);
 	}
 	
+	protected void initConfig(){
+		//首先初始化配置信息
+		if (config!=null){
+			return;
+		}
+		
+		this.config = this.getConfig();
+		config.init();
+	}
+	
 	/**
 	 * 初始化
 	 */
 	@BeforeClass
 	public void init(){
+		
+		initConfig();
 		/* 初始化变量 */
 		annotationClassList = new LinkedList<Class<? extends Annotation>>();
-		
-		//首先初始化配置信息
-		this.config = this.getConfig();
-		config.init();
 		
 		funyTestMethodFactory = this.config.getFunnyMethodFactory();
 		
@@ -88,6 +96,7 @@ public class FunyTestEngine extends AbstractTestNGSpringContextTests implements 
 	@DataProvider(name = "FunyTestDataProvider")
 	public Iterator<TestContext> getData(Method m, @TestInstance Object instance){
 		try {
+			initConfig();
 			return this.config.getDataProvider().getData(m, this.getClass(), instance);
 		} catch (DocumentException e) {
 			// TODO 说明解析失败了
@@ -138,8 +147,6 @@ public class FunyTestEngine extends AbstractTestNGSpringContextTests implements 
 		
 		this.config = config;
 	}
-
-	
 	
 	
 }

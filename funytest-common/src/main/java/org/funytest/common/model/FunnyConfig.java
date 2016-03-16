@@ -33,14 +33,16 @@ public class FunnyConfig implements IConfiguration {
 	private Map<String, DataSource> datasourceMap;
 	
 	public FunnyConfig(String configfile){
-		InputStream in = getClass().getResourceAsStream(configfile);
-		this.properties = new Properties();
 		try {
+			InputStream in = getClass().getResourceAsStream(configfile);
+			if (in==null){return;}
+			this.properties = new Properties();
 			properties.load(in);
-			
+			in.close();
 		} catch (IOException e) {
-			//TO_DO 需要解析异常，日志解析操作等
+			
 			e.printStackTrace();
+			
 		}
 	}
 	
