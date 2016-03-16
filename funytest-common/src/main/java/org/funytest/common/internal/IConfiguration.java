@@ -50,4 +50,11 @@ public interface IConfiguration {
 	 * @return
 	 */
 	public String getValue(String name);
+	
+	/**
+	 * 根据beanName获取bean
+	 * @param beanName
+	 * @return
+	 */
+	public Object getBeanByName(String beanName);
 }

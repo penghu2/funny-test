@@ -180,4 +180,10 @@ public class FunnyConfig implements IConfiguration {
 		
 		return null;
 	}
+
+	@Override
+	public Object getBeanByName(String beanName) {
+		// TODO Auto-generated method stub
+		return null;
+	}
 }

@@ -1,4 +1,4 @@
-package org.funytest.common.sql;
+package org.funytest.common.exception;
 
 /**
  * 表操作异常类

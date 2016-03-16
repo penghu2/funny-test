@@ -2,6 +2,7 @@ package org.funytest.common.sql;
 
 import javax.sql.DataSource;
 
+import org.funytest.common.exception.TableHandleException;
 import org.funytest.common.model.Table;
 
 /**

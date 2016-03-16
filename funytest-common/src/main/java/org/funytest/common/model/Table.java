@@ -46,6 +46,11 @@ public class Table {
 	 * N:  标识着不需要校验 
 	 */
 	private Map<String, String> flagMap;
+	
+	/**
+	 * 字段的类型
+	 */
+	private Map<String, String> colType;
 		
 	/* 表格数据 */
 	private List<Map<String, String>> datalist;
@@ -153,5 +158,15 @@ public class Table {
 	public void setGroups(String[] groups) {
 		this.groups = groups;
 	}
+
+	public Map<String, String> getColType() {
+		return colType;
+	}
+
+	public void setColType(Map<String, String> colType) {
+		this.colType = colType;
+	}
+	
+	
 }
 

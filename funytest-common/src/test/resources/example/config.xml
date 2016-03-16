@@ -12,7 +12,7 @@
 		<test-align index="0" doClean="false">
 			<test-init>
 				<!-- 数据库准备 -->
-				<table name="sys_user" group = "group1">
+				<table name="sys_user" group="group1">
 					<id>1</id>
 					<organization_id>10001</organization_id>
 					<username F="C">xiuzhu.hp</username>
@@ -24,7 +24,7 @@
 			</test-init>
 			
 			<test-method-execute>
-				<api class="" method="">
+				<api class="" bean="" method="">
 					<args type="int">1</args>
 					<args>"the end"</args>
 				</api>

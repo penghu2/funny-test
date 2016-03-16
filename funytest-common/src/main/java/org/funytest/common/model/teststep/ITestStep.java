@@ -10,38 +10,11 @@ import org.funytest.common.internal.handler.ITestStepHandler;
  */
 public interface ITestStep {
 	
-	public enum Type{
-		INIT("test-init"), 
-		METHODEXE("test-method-execute"),
-		EXPECT("test-expect"),
-		CLEAN("test-clean"),
-		Other("other");
-		
-		private String code;
-		
-		Type(String code){
-			this.code = code;
-		}
-		
-		public String getCode(){
-			return this.code;
-		}
-		
-		public static Type getTypeByCode(String code){
-			
-			for (Type item : Type.values()){
-				if (item.getCode().equals(code)) return item;
-			}
-			
-			return null;
-		}
-	}
-	
 	/**
 	 * 获取类型
 	 * @return
 	 */
-	public Type getType();
+	public String getType();
 	
 	/**
 	 * 执行方法

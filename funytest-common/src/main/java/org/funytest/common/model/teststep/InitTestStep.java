@@ -6,6 +6,7 @@ import java.util.List;
 import org.funytest.common.exception.TestStepException;
 import org.funytest.common.internal.handler.ITestStepHandler;
 import org.funytest.common.model.Table;
+import org.funytest.common.utils.Constant;
 
 /**
  * 初始化类
@@ -16,9 +17,9 @@ public class InitTestStep implements ITestStep {
 	
 	private List<Table> tables;
 	
-	public Type getType() {
+	public String getType() {
 		
-		return Type.INIT;
+		return Constant.STEP_TYPE_INIT;
 	}
 
 	public void execute(ITestStepHandler handler) throws TestStepException {

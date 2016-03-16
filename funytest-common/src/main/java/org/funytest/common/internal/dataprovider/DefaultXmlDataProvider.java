@@ -13,9 +13,9 @@ import org.dom4j.Element;
 import org.dom4j.io.SAXReader;
 import org.funytest.common.internal.IConfiguration;
 import org.funytest.common.internal.IFunyTestCase;
+import org.funytest.common.internal.step.TestStepFactory;
 import org.funytest.common.model.TestCase;
 import org.funytest.common.model.TestContext;
-import org.funytest.common.model.teststep.TestStepFactory;
 import org.funytest.common.utils.CollectionUtil;
 
 /**
