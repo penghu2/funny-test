@@ -1,0 +1,15 @@
+ <?xml version="1.0" encoding="UTF-8"?>
+ <!DOCTYPE mapper
+ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+ "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+ 
+ <mapper namespace="org.funny.ats">
+ 	
+ 	<select id="MS-USER-SELECT-BY-USERNAME" parameterType="String"  resultType="org.funny.ats.model.User">
+ 		select id, organization_id, username, password, salt, role_ids, locked from sys_user where (username=#username#)	
+ 	</select>
+ 	
+ 	<insert id="MS-USER-INSERT-ONE-ACCOUNT">
+ 		insert into sys_user(organization_id, username, password, salt, role_ids) values (#organization_id#, #username#, #password#, #salt#, #role_ids#)
+ 	</insert>
+ </mapper>

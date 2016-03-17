@@ -44,8 +44,7 @@ public class InitTestStepBuilder extends AbstractStepBuilder {
 					table.setName(name);
 					table.setDatasource(config.getDataSource(name, groups));
 					table.setType(Table.Type.insert);
-					table.setGroups(groups);
-					
+					table.setGroups(groups);		
 					doUpdateFlag = true;
 				}
 					

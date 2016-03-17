@@ -19,7 +19,7 @@ public class TestStepFactory {
 	}
 
 	/**
-	 * 根据节点内容，提炼出对应的ITestStep，采用builder设计模式
+	 * 根据节点内容，提炼出对应的ITestStep，采用策略设计模式
 	 * @param name  名称
 	 * @param element 对应上述节点
 	 * @return
@@ -27,11 +27,14 @@ public class TestStepFactory {
 	public ITestStep buildStep(String name, Element element, IConfiguration config){
 		
 		ITestStepBuilder builder = this.builderMap.get(name);
-		return builder.buildStep(name, element, config);
+		
+		ITestStep step = builder != null ? builder.buildStep(name, element, config) : null;
+				
+		return step;
 	}
 	
 	/**
-	 * 添加结点构造器
+	 * 添加结点构造器，对外预留扩展点
 	 * @param stepName step结点名称
 	 * @param builder  step结点的工厂实例
 	 */

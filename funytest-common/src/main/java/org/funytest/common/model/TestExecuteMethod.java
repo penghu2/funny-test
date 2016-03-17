@@ -15,6 +15,8 @@ public class TestExecuteMethod {
 	
 	private Object[] args;
 	
+	private Object expectObj;
+	
 	public void execute() throws TestStepException {
 		try {
 			if (this.method.getParameterTypes().length != args.length){
@@ -67,5 +69,13 @@ public class TestExecuteMethod {
 
 	public void setArgs(Object[] args) {
 		this.args = args;
+	}
+
+	public Object getExpectObj() {
+		return expectObj;
+	}
+
+	public void setExpectObj(Object expectObj) {
+		this.expectObj = expectObj;
 	}
 }

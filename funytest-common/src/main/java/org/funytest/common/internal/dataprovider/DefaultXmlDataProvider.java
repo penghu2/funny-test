@@ -16,6 +16,7 @@ import org.funytest.common.internal.IFunyTestCase;
 import org.funytest.common.internal.step.TestStepFactory;
 import org.funytest.common.model.TestCase;
 import org.funytest.common.model.TestContext;
+import org.funytest.common.model.teststep.ITestStep;
 import org.funytest.common.utils.CollectionUtil;
 
 /**
@@ -182,7 +183,10 @@ public class DefaultXmlDataProvider implements IDataProvider, Iterator<Object> {
 			
 			IConfiguration config = ((IFunyTestCase)this.instance).getIConfiguration();
 			if (testStepFactory==null) testStepFactory = new TestStepFactory();
-			align.addTestStep(testStepFactory.buildStep(name, item, config));
+			ITestStep step = testStepFactory.buildStep(name, item, config);
+			if (step != null) {
+				align.addTestStep(step);
+			}
 		}
 	}
 	

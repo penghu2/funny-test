@@ -96,7 +96,9 @@ public class MethodTestStepBuilder extends AbstractStepBuilder {
 		}
 		
 		/* 解析期望结果 */
-		getResultExpect(apiElement.element("result-expect"));
+		Object expectObj = getResultExpect(apiElement.element("result-expect"));
+		
+		exeMethod.setExpectObj(expectObj);
 		
 		return exeMethod;
 	}
@@ -120,7 +122,7 @@ public class MethodTestStepBuilder extends AbstractStepBuilder {
 		
 		if (o!=null) return o;
 		
-		Class cls = ClassHelper.forName(className);
+		Class<?> cls = ClassHelper.forName(className);
 		if ("json".equals(prase) && cls != null) return JSON.parseObject(value, cls);
 		
 		return null;
@@ -153,7 +155,7 @@ public class MethodTestStepBuilder extends AbstractStepBuilder {
 
 			if (StringUtils.isNoneBlank(praseType)){
 				if ("json".equals(praseType)){
-					Class cls = ClassHelper.forName(type);
+					Class<?> cls = ClassHelper.forName(type);
 					o = JSON.parseObject(value, cls);
 				}
 			}

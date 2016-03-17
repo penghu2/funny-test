@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<test-config>
+	<properties>
+		<pid>20101213</pid>
+	</properties>
+		
+	<test-case id="TC01" desc="测试用例一">
+		<properties>
+			<tableIndex>00</tableIndex>
+		</properties>
+		<!-- 测试链 -->
+		<test-align index="0" doClean="false">
+			<test-init>
+				<!-- 数据库准备 -->
+				<table name="sys_user" group = "group1">
+					<id>1</id>
+					<organization_id>10001</organization_id>
+					<username F="C">xiuzhu.hp</username>
+					<password>xxxxxx</password>
+					<salt>123456789</salt>
+					<role_ids>1,3,4</role_ids>
+					<locked type="tinyint"></locked>
+				</table>
+			</test-init>
+			
+			<test-method-execute>
+				<api id="1" class="org.funny.ats.service.UserService" 
+					bean="userService" method="addUser">
+					<arg type="org.funny.ats.model.User" prase="json">
+					{'id':1, 'organization_id':1, 'username':'A', 'password':'p', 'salt':'123456', 'role_ids':'1'}
+					</arg>
+					<result-expect type="int">1</result-expect>
+				</api>
+			</test-method-execute>
+			
+			<test-expect>
+				
+			</test-expect>
+		</test-align>
+	</test-case>
+	
+	
+</test-config>
