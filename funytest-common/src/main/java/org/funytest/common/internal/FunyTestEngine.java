@@ -53,7 +53,7 @@ public class FunyTestEngine extends AbstractTestNGSpringContextTests implements 
 		}
 		
 		this.config = this.getConfig();
-		config.init();
+		config.init(this);
 	}
 	
 	/**
@@ -103,6 +103,20 @@ public class FunyTestEngine extends AbstractTestNGSpringContextTests implements 
 			e.printStackTrace();
 		}
 		return null;
+	}
+	
+	/**
+	 * 从spring上下文中获取指定的bean
+	 * @param name
+	 * @return 
+	 */
+	public Object getBean(String name){
+		try {
+			return applicationContext.getBean(name);
+		} catch (Exception e){
+			e.printStackTrace();
+			return null;
+		}
 	}
 	
 	/*==========================[待实现区域]=============================*/

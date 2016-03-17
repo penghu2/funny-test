@@ -2,12 +2,14 @@ package org.funytest.common.model;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.HashMap;
 import java.util.Map;
 import java.util.Properties;
 
 import javax.sql.DataSource;
 
 import org.apache.commons.lang3.StringUtils;
+import org.funytest.common.internal.FunyTestEngine;
 import org.funytest.common.internal.IAnnotationMethodFinder;
 import org.funytest.common.internal.IConfiguration;
 import org.funytest.common.internal.ITestRunner;
@@ -25,12 +27,13 @@ import org.testng.internal.ClassHelper;
  */
 public class FunnyConfig implements IConfiguration {
 
-	private ITestRunner runner;
-	private IAnnotationMethodFinder finder;
-	private IDataProvider dataProvider;
-	private IFunnyTestMethodFactory funnyMethodFactory;
-	private Properties properties;
-	private Map<String, DataSource> datasourceMap;
+	private ITestRunner runner;   						//测试runner
+	private IAnnotationMethodFinder finder;				//注解finder
+	private IDataProvider dataProvider;					//数据驱动
+	private IFunnyTestMethodFactory funnyMethodFactory; //funnymethod工厂类
+	private Properties properties;						//配置属性，对应funny-test.config 文件
+	private Map<String, DataSource> datasourceMap;		//数据源配置器
+	private FunyTestEngine engine;						//测试引擎类，负责调度和上下文的维护
 	
 	public FunnyConfig(String configfile){
 		try {
@@ -46,20 +49,58 @@ public class FunnyConfig implements IConfiguration {
 		}
 	}
 	
-	public void init(){
+	public void init(FunyTestEngine engine){
 		initRunner(properties);
 		initFinder(properties);
 		initFactory(properties);
 		initDataProvider(properties);
-		initDataSource(properties);
+		initDataSource(properties, engine);
 	}
 	
 	/**
-	 * 初始化数据驱动
+	 * 初始化数据datasource, 这个是需要从配置中获取到的
 	 * @param properties
 	 */
-	public void initDataSource(Properties properties){
+	public void initDataSource(Properties properties, FunyTestEngine engine){
+		datasourceMap = new HashMap<>();
 		
+		String dataSourcesStr = properties.getProperty("ds.list").trim();
+		if (StringUtils.isBlank(dataSourcesStr)) return;
+		
+		/* 按照逗号分隔 */
+		String[] dataSourceStrList = dataSourcesStr.split(",");
+		for (int i=0; i<dataSourceStrList.length; i++) {
+			String dataSourceStr = dataSourceStrList[i];
+			
+			String key = "ds."+ dataSourceStr +".table";
+			String tablesStr = properties.getProperty(key);
+			if (StringUtils.isBlank(tablesStr)) continue;
+			
+			/*
+			 * 这里可能会存在如下可能性 ：
+			 * 1. 获取bean失败
+			 * 2. 获取的bean不是DataSource，强转失败
+			 */
+			DataSource ds = (DataSource) engine.getBean(dataSourceStr);
+			
+			if (ds==null) continue;
+			
+			/*
+			 * 分组的存在是为了支持多数据源，考虑分库分表的情况，使用group进行区分 
+			 */
+			String group = properties.getProperty("ds."+ dataSourceStr +".group");
+			String tb_suffix="";
+			if (StringUtils.isNotEmpty(group)) {
+				tb_suffix="_"+group;
+			}
+			
+			/* 按照逗号分隔 */
+			String[] tables = tablesStr.split(",");
+			for (int j=0; j<tables.length; j++) {
+				
+				datasourceMap.put(tables[j]+tb_suffix, ds);
+			}
+		}
 	}
 	
 	/**
@@ -132,6 +173,23 @@ public class FunnyConfig implements IConfiguration {
 		}
 	}
 
+	public DataSource getDataSource(String tableName, String ...groups) {
+		
+		if (this.datasourceMap == null) return null;
+		
+		if (groups!=null) {
+			return this.datasourceMap.get(tableName+"_"+groups[0]);
+		}
+		
+		return this.datasourceMap.get(tableName);
+	}
+	
+	@Override
+	public Object getBeanByName(String beanName) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+	
 	public IAnnotationMethodFinder getAnnotationFinder() {
 		
 		return finder;
@@ -176,14 +234,39 @@ public class FunnyConfig implements IConfiguration {
 		this.properties = properties;
 	}
 
-	public DataSource getDataSource(String tableName, String ...groups) {
-		
-		return null;
+	public ITestRunner getRunner() {
+		return runner;
 	}
 
-	@Override
-	public Object getBeanByName(String beanName) {
-		// TODO Auto-generated method stub
-		return null;
+	public void setRunner(ITestRunner runner) {
+		this.runner = runner;
+	}
+
+	public IAnnotationMethodFinder getFinder() {
+		return finder;
+	}
+
+	public void setFinder(IAnnotationMethodFinder finder) {
+		this.finder = finder;
+	}
+
+	public Map<String, DataSource> getDatasourceMap() {
+		return datasourceMap;
+	}
+
+	public void setDatasourceMap(Map<String, DataSource> datasourceMap) {
+		this.datasourceMap = datasourceMap;
+	}
+
+	public FunyTestEngine getEngine() {
+		return engine;
+	}
+
+	public void setEngine(FunyTestEngine engine) {
+		this.engine = engine;
+	}
+
+	public void setFunnyMethodFactory(IFunnyTestMethodFactory funnyMethodFactory) {
+		this.funnyMethodFactory = funnyMethodFactory;
 	}
 }

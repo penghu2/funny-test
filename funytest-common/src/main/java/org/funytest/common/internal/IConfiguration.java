@@ -17,7 +17,7 @@ public interface IConfiguration {
 	/**
 	 * 初始化配置信息
 	 */
-	public void init();
+	public void init(FunyTestEngine testEngine);
 	
 	public DataSource getDataSource(String tableName, String ...groups);
 	
