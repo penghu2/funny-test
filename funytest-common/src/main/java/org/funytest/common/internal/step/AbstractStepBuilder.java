@@ -44,7 +44,7 @@ public abstract class AbstractStepBuilder implements ITestStepBuilder{
 			//表列名
 			String colName = item.getName();
 			String flag = item.attributeValue("F");
-			String value = item.getStringValue();
+			String value = item.getTextTrim();
 			
 			/* 添加标识位，如果表已经存在，则不需要添加，不存在就添加 */
 			if (StringUtils.isNotBlank(flag) && doUpdateFlag){

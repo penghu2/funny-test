@@ -15,7 +15,7 @@ public class TestStepFactory {
 	public TestStepFactory(){
 		builderMap = new HashMap<String, ITestStepBuilder>();
 		builderMap.put(Constant.STEP_TYPE_INIT, new InitTestStepBuilder());
-		builderMap.put(Constant.STEP_TYPE_INIT, new MethodTestStepBuilder());
+		builderMap.put(Constant.STEP_TYPE_METHOD, new MethodTestStepBuilder());
 	}
 
 	/**
