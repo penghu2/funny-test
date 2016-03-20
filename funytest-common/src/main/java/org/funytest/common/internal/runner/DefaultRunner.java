@@ -5,40 +5,31 @@ import java.util.Map;
 import org.funytest.common.internal.ITestRunner;
 import org.funytest.common.model.TestContext;
 
+/**
+ * runner负责TestContext的具体实施,并且作为template模板的容器，负责模板的真正意义上的调度
+ * 
+ * @author xiuzhu.hp
+ */
 public class DefaultRunner implements ITestRunner {
 	
 	public Map<String, String> testStepHandlerMap;
 
+	private AbstractTestTemplate template;
+	
 	public void run(TestContext context) {
 		
 		/* 开始执行用例 */
-		runWithTemplate(getTemplate(), context);
+		getTemplate().run(context); 
+	}
+		
+	public void setTemplate(AbstractTestTemplate template){
+		this.template = template;
 	}
 	
-	/**
-	 * 使用模板进行奔跑~
-	 */
-	public void runWithTemplate(AbstractTestTemplate template, TestContext context) {
-		
-		try {
-			template.clean(context);
-			
-			template.init(context);
-			
-			template.execute(context);
-			
-			template.check(context);
-			
-			template.clean(context);
-			
-		} catch (Exception e){
-			
-		} finally {
-			
-		}
-	}
-
 	public AbstractTestTemplate getTemplate(){
-		return null;
+		
+		if (template == null) return null;
+		
+		return template;
 	}
 }

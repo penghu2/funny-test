@@ -21,13 +21,7 @@
     http://www.springframework.org/schema/util/spring-util.xsd">
     
     <!-- 引入配置文件 -->  
-    <bean id="propertyConfigurer" class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">  
-        <property name="locations">  
-            <list>  
-                <value>classpath*:jdbc.properties</value>  
-            </list>  
-        </property>  
-    </bean> 
+    <context:property-placeholder location="classpath:jdbc.properties"/> 
     
    <import resource="classpath*:spring-mybatis.xml" />
 </beans>

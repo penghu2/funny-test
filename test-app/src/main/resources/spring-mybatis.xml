@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?>
+<?xml version="1.0" encoding="GBK"?>
 <beans xmlns="http://www.springframework.org/schema/beans"
   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
   xmlns:p="http://www.springframework.org/schema/p"
@@ -21,59 +21,59 @@
     <bean id="dataSource" class="com.alibaba.druid.pool.DruidDataSource" init-method="init"
     destroy-method="close" >
 	    <property name="driverClassName">
-	      <value>com.mysql.jdbc.Driver</value>
+	      <value>${jdbc_driverClassName}</value>
 	    </property>
 	    <property name="url">
-	      <value>jdbc:mysql://localhost:3306/test?useUnicode=true&amp;characterEncoding=utf-8</value>
+	      <value>${jdbc_url}</value>
 	    </property>
 	    <property name="username">
-	      <value>root</value>
+	      <value>${jdbc_username}</value>
 	    </property>
 	    <property name="password">
-	      <value></value>
+	      <value>${jdbc_password}</value>
 	    </property>
-	    <!-- è¿žæŽ¥æ± æœ€å¤§ä½¿ç”¨è¿žæŽ¥æ•° -->
+	    <!-- Á¬½Ó³Ø×î´óÊ¹ÓÃÁ¬½ÓÊý -->
 	    <property name="maxActive">
 	      <value>20</value>
 	    </property>
-	    <!-- åˆå§‹åŒ–è¿žæŽ¥å¤§å° -->
+	    <!-- ³õÊ¼»¯Á¬½Ó´óÐ¡ -->
 	    <property name="initialSize">
 	      <value>1</value>
 	    </property>
-	    <!-- èŽ·å–è¿žæŽ¥æœ€å¤§ç­‰å¾…æ—¶é—´ -->
+	    <!-- »ñÈ¡Á¬½Ó×î´óµÈ´ýÊ±¼ä -->
 	    <property name="maxWait">
 	      <value>60000</value>
 	    </property>
-	    <!-- è¿žæŽ¥æ± æœ€å¤§ç©ºé—² -->
+	    <!-- Á¬½Ó³Ø×î´ó¿ÕÏÐ -->
 	    <property name="maxIdle">
 	      <value>20</value>
 	    </property>
-	    <!-- è¿žæŽ¥æ± æœ€å°ç©ºé—² -->
+	    <!-- Á¬½Ó³Ø×îÐ¡¿ÕÏÐ -->
 	    <property name="minIdle">
 	      <value>3</value>
 	    </property>
-	    <!-- è‡ªåŠ¨æ¸…é™¤æ— ç”¨è¿žæŽ¥ -->
+	    <!-- ×Ô¶¯Çå³ýÎÞÓÃÁ¬½Ó -->
 	    <property name="removeAbandoned">
 	      <value>true</value>
 	    </property>
-	    <!-- æ¸…é™¤æ— ç”¨è¿žæŽ¥çš„ç­‰å¾…æ—¶é—´ -->
+	    <!-- Çå³ýÎÞÓÃÁ¬½ÓµÄµÈ´ýÊ±¼ä -->
 	    <property name="removeAbandonedTimeout">
 	      <value>180</value>
 	    </property>
-	    <!-- è¿žæŽ¥å±žæ€§ -->
+	    <!-- Á¬½ÓÊôÐÔ -->
 	    <property name="connectionProperties">
 	      <value>clientEncoding=UTF-8</value>
 	    </property>
   </bean>
      
-   <!-- mybatisæ–‡ä»¶é…ç½®ï¼Œæ‰«ææ‰€æœ‰mapperæ–‡ä»¶ -->
+   <!-- mybatisÎÄ¼þÅäÖÃ£¬É¨ÃèËùÓÐmapperÎÄ¼þ -->
    <bean id="sqlSessionFactory"
           class="org.mybatis.spring.SqlSessionFactoryBean"
           p:dataSource-ref="dataSource"
           p:configLocation="classpath:mybatis-config.xml"/>
           <!--  p:mapperLocations="classpath:mapper/*.xml"/>-->
        
-   <!-- springä¸Žmybatisæ•´åˆé…ç½®ï¼Œæ‰«ææ‰€æœ‰dao -->
+   <!-- springÓëmybatisÕûºÏÅäÖÃ£¬É¨ÃèËùÓÐdao -->
    <bean class="org.mybatis.spring.mapper.MapperScannerConfigurer"
         p:basePackage="com.funnytest.app.common.dao"
         p:sqlSessionFactoryBeanName="sqlSessionFactory"/>
@@ -98,7 +98,7 @@
         <property name="isolationLevelName" value="ISOLATION_READ_UNCOMMITTED" />  
     </bean>
     
-   <!-- å¯ç”¨å¯¹äº‹åŠ¡æ³¨è§£çš„æ”¯æŒ -->  
+   <!-- ÆôÓÃ¶ÔÊÂÎñ×¢½âµÄÖ§³Ö -->  
    <tx:annotation-driven transaction-manager="transactionManager"/> 
         
 </beans>
