@@ -2,7 +2,6 @@ package org.funytest.common;
 
 import org.funytest.common.internal.FunyTestEngine;
 import org.funytest.common.internal.IConfiguration;
-import org.funytest.common.internal.dataprovider.DefaultXmlDataProvider;
 import org.testng.annotations.Test;
 
 public class DataProviderTest {
@@ -14,9 +13,7 @@ public class DataProviderTest {
 		FunyTestEngine ft = new FunyTestEngine();
 		ft.configfile = "/example/funny-test.config";
 		IConfiguration config = ft.getConfig();
-		config.init();
-		
-		
+		config.init(ft);
 		
 	}
 }
