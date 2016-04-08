@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<test-config>
+	<properties>
+		<pid>20101213</pid>
+	</properties>
+	
+	<http id="getUserTotalFlopNumber" method="GET">
+		<url>http://xin.mogujie.com/jsonp/getUserTotalFlopNumber/1?callback=jsonp3</url>
+		<headers>
+			<sign>${sign}</sign>
+		</headers>
+	</http>
+		
+	<test-case id="TC01" desc="测试用例一">
+		<properties>
+			<tableIndex>00</tableIndex>
+		</properties>
+		<!-- 测试链 -->
+		<test-align>
+			<test-http id="getUserTotalFlopNumber">
+				<properties>
+					<sign>00</sign>
+				</properties>
+				<params>
+				</params>
+				<check>
+					<status>200</status>
+					<responseBody>
+						$toJson.data.response.data==1
+					</responseBody>
+				</check>
+			</test-http>
+		</test-align>
+	</test-case>
+	
+	
+</test-config>
