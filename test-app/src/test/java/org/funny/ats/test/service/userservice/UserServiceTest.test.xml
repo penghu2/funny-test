@@ -3,7 +3,13 @@
 	<properties>
 		<pid>20101213</pid>
 	</properties>
-		
+	
+	<http id="getUserTotalFlopNumber" method="GET">
+	
+		<url><![CDATA[http://xin.mogujie.com/jsonp/getUserTotalFlopNumber/1?_=1458565140169&callback=openFanGJ&sign=0URQYPkOu3%2BDUGCQPXFfHHvAoiLiYVXNHUoQbB9Yddr4w%2Faupsk3D88rdfjSBakxlDdyAKYuUK%2Fc3L63fgVNog%3D%3D&_did=ghjkuisklioi72]]></url>
+		<headers></headers>
+	</http>
+	
 	<test-case id="TC01" desc="测试用例一">
 		<properties>
 			<tableIndex>00</tableIndex>
@@ -22,7 +28,16 @@
 					<locked type="tinyint"></locked>
 				</table>
 			</test-init>
-			
+			<test-http id="getUserTotalFlopNumber">
+				<params>
+				</params>
+				<check>
+					<status>200</status>
+					<responseBody>
+						return this.check(responseBody, 2)
+					</responseBody>
+				</check>
+			</test-http>
 			<test-method-execute>
 				<api id="1" class="org.funny.ats.service.UserService" 
 					bean="userService" method="addUser">

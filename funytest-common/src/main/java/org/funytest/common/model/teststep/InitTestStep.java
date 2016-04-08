@@ -3,7 +3,6 @@ package org.funytest.common.model.teststep;
 import java.util.LinkedList;
 import java.util.List;
 
-import org.funytest.common.exception.TestStepException;
 import org.funytest.common.internal.handler.ITestStepHandler;
 import org.funytest.common.model.Table;
 import org.funytest.common.utils.Constant;
@@ -22,14 +21,8 @@ public class InitTestStep implements ITestStep {
 		return Constant.STEP_TYPE_INIT;
 	}
 
-	public void execute(ITestStepHandler handler) throws TestStepException {
-		
-		/**
-		 * 执行表格操作
-		 */
-		for (Table tb : tables){
-			handler.handle(tb);
-		}
+	public void execute(ITestStepHandler handler) throws Exception {
+		handler.handle(this);
 	}
 	
 	public void addTable(Table tb) {

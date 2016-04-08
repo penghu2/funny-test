@@ -11,8 +11,9 @@ public interface IFunyTestCase {
 	
 	/**
 	 * run方法，为核心方法
+	 * @throws Exception 
 	 */
-	public void run(TestContext context);
+	public void run(TestContext context) throws Exception;
 
 	/**
 	 * 设置配置信息

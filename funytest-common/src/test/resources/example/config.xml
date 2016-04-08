@@ -35,6 +35,10 @@
 					<property name="username" type="int">1</property>
 				</api-expect>
 			</test-expect>
+			
+			<test-http>
+				
+			</test-http>
 		</test-align>
 	</test-case>
 	

@@ -3,7 +3,6 @@ package org.funytest.common.internal.step;
 import org.dom4j.Element;
 import org.funytest.common.internal.IConfiguration;
 import org.funytest.common.model.teststep.ITestStep;
-import org.funytest.common.model.teststep.InitTestStep;
 
 /**
  * ITestStep工厂类

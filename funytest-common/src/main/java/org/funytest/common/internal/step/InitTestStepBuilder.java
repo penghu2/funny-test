@@ -13,14 +13,11 @@ import org.funytest.common.model.teststep.InitTestStep;
  *
  */
 public class InitTestStepBuilder extends AbstractStepBuilder {
-
-	/**
-	 * @param element 对应xml中的节点 "test-init"
-	 */
-	@Override
-	public ITestStep buildStep(Element element, IConfiguration config) {
+	
+	protected void initStep(Element element, IConfiguration config, InitTestStep step, Table.Type type){
 		
-		InitTestStep step = new InitTestStep();
+		if (step == null) return;
+		
 		/* 遍历子节点 */
 		for (Iterator<?> it=element.elementIterator();it.hasNext();){
 			
@@ -43,7 +40,7 @@ public class InitTestStepBuilder extends AbstractStepBuilder {
 					
 					table.setName(name);
 					table.setDatasource(config.getDataSource(name, groups));
-					table.setType(Table.Type.insert);
+					table.setType(type);
 					table.setGroups(groups);		
 					doUpdateFlag = true;
 				}
@@ -58,6 +55,16 @@ public class InitTestStepBuilder extends AbstractStepBuilder {
 			}
 		}
 		
+	}
+
+	/**
+	 * @param element 对应xml中的节点 "test-init"
+	 */
+	@Override
+	public ITestStep buildStep(Element element, IConfiguration config) {
+		
+		InitTestStep step = new InitTestStep();
+		initStep(element, config, step, Table.Type.insert);
 		return step;
 	}
 }

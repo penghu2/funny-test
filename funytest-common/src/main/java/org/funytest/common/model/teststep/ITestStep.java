@@ -20,5 +20,5 @@ public interface ITestStep {
 	 * 执行方法
 	 * @throws TestStepException
 	 */
-	public void execute(ITestStepHandler handler) throws TestStepException;
+	public void execute(ITestStepHandler handler) throws Exception;
 }

@@ -10,12 +10,14 @@ import org.funytest.common.utils.Constant;
 
 public class TestStepFactory {
 	
-	private Map<String, ITestStepBuilder> builderMap;
+	public static Map<String, ITestStepBuilder> builderMap;
 	
-	public TestStepFactory(){
+	static{
 		builderMap = new HashMap<String, ITestStepBuilder>();
 		builderMap.put(Constant.STEP_TYPE_INIT, new InitTestStepBuilder());
 		builderMap.put(Constant.STEP_TYPE_METHOD, new MethodTestStepBuilder());
+		builderMap.put(Constant.STEP_TYPE_CHECK, new CheckTableStepBuilder());
+		builderMap.put(Constant.STEP_TYPE_HTTP, new HttpTestStepBuilder());
 	}
 
 	/**
@@ -50,6 +52,4 @@ public class TestStepFactory {
 	public void setBuilderMap(Map<String, ITestStepBuilder> builderMap) {
 		this.builderMap = builderMap;
 	}
-	
-	
 }

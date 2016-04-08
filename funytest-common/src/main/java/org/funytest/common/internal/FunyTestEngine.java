@@ -6,15 +6,14 @@ import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
-import java.util.Properties;
 
 import org.dom4j.DocumentException;
 import org.funytest.common.internal.method.IFunnyTestMethod;
 import org.funytest.common.internal.method.IFunnyTestMethodFactory;
 import org.funytest.common.model.FunnyConfig;
 import org.funytest.common.model.TestContext;
-import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.testng.AbstractTestNGSpringContextTests;
+import org.testng.Assert;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.TestInstance;
@@ -41,9 +40,15 @@ public class FunyTestEngine extends AbstractTestNGSpringContextTests implements 
 	
 	/**
 	 * 执行方法
+	 * @throws Exception 
 	 */
-	public void run(TestContext context) {
-		this.config.getTestRunner().run(context);
+	public void run(TestContext context){
+		try {
+			this.config.getTestRunner().run(context);
+		} catch (Exception e) {
+			Assert.fail(e.getMessage());
+		}
+		
 	}
 	
 	protected void initConfig(){

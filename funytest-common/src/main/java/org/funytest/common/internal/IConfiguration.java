@@ -3,6 +3,7 @@ package org.funytest.common.internal;
 import javax.sql.DataSource;
 
 import org.funytest.common.internal.dataprovider.IDataProvider;
+import org.funytest.common.internal.handler.ITestStepHandlerFactory;
 import org.funytest.common.internal.method.IFunnyTestMethodFactory;
 
 /**
@@ -43,6 +44,12 @@ public interface IConfiguration {
 	public IDataProvider getDataProvider();
 	
 	public IFunnyTestMethodFactory getFunnyMethodFactory();
+	
+	/**
+	 * 获取TestStep的hanler工厂类
+	 * @return ITestStepHandlerFactory
+	 */
+	public ITestStepHandlerFactory getTestStepHandlerFactory();
 	
 	/**
 	 * 获取配置的值

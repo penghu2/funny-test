@@ -16,8 +16,11 @@ import org.funytest.common.internal.ITestRunner;
 import org.funytest.common.internal.dataprovider.DefaultXmlDataProvider;
 import org.funytest.common.internal.dataprovider.IDataProvider;
 import org.funytest.common.internal.finder.FunnyTestAnnotationFinder;
+import org.funytest.common.internal.handler.ITestStepHandlerFactory;
+import org.funytest.common.internal.handler.TestStepHandlerFactory;
 import org.funytest.common.internal.method.IFunnyTestMethodFactory;
 import org.funytest.common.internal.runner.DefaultRunner;
+import org.funytest.common.utils.ObjectUtil;
 import org.testng.internal.ClassHelper;
 
 /**
@@ -34,7 +37,12 @@ public class FunnyConfig implements IConfiguration {
 	private Properties properties;						//配置属性，对应funny-test.config 文件
 	private Map<String, DataSource> datasourceMap;		//数据源配置器
 	private FunyTestEngine engine;						//测试引擎类，负责调度和上下文的维护
+	private ITestStepHandlerFactory testStepHandlerFactory;	//test handler工厂类
 	
+	/**
+	 * 构造函数
+	 * @param configfile
+	 */
 	public FunnyConfig(String configfile){
 		try {
 			InputStream in = getClass().getResourceAsStream(configfile);
@@ -45,16 +53,38 @@ public class FunnyConfig implements IConfiguration {
 		} catch (IOException e) {
 			
 			e.printStackTrace();
-			
 		}
 	}
 	
+	/**
+	 * 初始化函数
+	 */
 	public void init(FunyTestEngine engine){
+		/* 前后关系不可置换 */
+		initTestStepHandlerFactory(properties);
 		initRunner(properties);
 		initFinder(properties);
-		initFactory(properties);
+		initMethodFactory(properties);
 		initDataProvider(properties);
 		initDataSource(properties, engine);
+		
+	}
+	
+	/**
+	 * 初始化测试test step handler工厂类
+	 */
+	public void initTestStepHandlerFactory(Properties properties) {
+		if (ObjectUtil.notNull(this.testStepHandlerFactory)) return;
+		
+		String className = properties.getProperty("testStepHandlerFactory");
+		if (StringUtils.isBlank(className)){
+			this.testStepHandlerFactory = new TestStepHandlerFactory();
+			return;
+		} else {
+			@SuppressWarnings("unchecked")
+			Class<IDataProvider> cls = (Class<IDataProvider>) ClassHelper.forName(className);
+			this.testStepHandlerFactory = (ITestStepHandlerFactory) ClassHelper.newInstance(cls);
+		}
 	}
 	
 	/**
@@ -109,6 +139,8 @@ public class FunnyConfig implements IConfiguration {
 	 */
 	@SuppressWarnings("unchecked")
 	protected void initDataProvider(Properties properties){
+		if (ObjectUtil.notNull(this.dataProvider)) return;
+		
 		String className = properties.getProperty("DataProvider");
 		if (StringUtils.isBlank(className)){
 			this.dataProvider = new DefaultXmlDataProvider();
@@ -125,6 +157,8 @@ public class FunnyConfig implements IConfiguration {
 	 */
 	@SuppressWarnings("unchecked")
 	protected void initRunner(Properties properties) {
+		if (ObjectUtil.notNull(this.runner)) return;
+		
 		String className = properties.getProperty("TestRunner");
 		if (!StringUtils.isBlank(className)){
 			Class<ITestRunner> cls = (Class<ITestRunner>) ClassHelper.forName(className);
@@ -132,17 +166,24 @@ public class FunnyConfig implements IConfiguration {
 			
 			//TO_DO 抛异常
 			if (this.runner == null){}
+			
+			//runner会涉及到handler的初始化，这个地方务必注意，不可遗漏，如果想扩展的话
+			this.runner.initStepHandlerFactory(this.testStepHandlerFactory);
 		} else {
 			this.runner = new DefaultRunner();
 		}
+		
+		
 	}
-	
+		
 	/**
 	 * 初始化annotation finder
 	 * @param properties
 	 */
 	@SuppressWarnings("unchecked")
 	protected void initFinder(Properties properties) {
+		if (ObjectUtil.notNull(this.finder)) return;
+		
 		String className = properties.getProperty("AnnotationFinder");
 		if (!StringUtils.isBlank(className)){
 			Class<IAnnotationMethodFinder> cls = (Class<IAnnotationMethodFinder>) ClassHelper.forName(className);
@@ -160,7 +201,9 @@ public class FunnyConfig implements IConfiguration {
 	 * @param properties
 	 */
 	@SuppressWarnings("unchecked")
-	protected void initFactory(Properties properties){
+	protected void initMethodFactory(Properties properties){
+		if (ObjectUtil.notNull(this.funnyMethodFactory)) return;
+		
 		String className = properties.getProperty("FunnyMethodFactory");
 		if (!StringUtils.isBlank(className)){
 			Class<IFunnyTestMethodFactory> cls = (Class<IFunnyTestMethodFactory>) ClassHelper.forName(className);
@@ -184,9 +227,18 @@ public class FunnyConfig implements IConfiguration {
 		return this.datasourceMap.get(tableName);
 	}
 	
+	/**
+	 * TestStep handler 工厂类
+	 */
+	@Override
+	public ITestStepHandlerFactory getTestStepHandlerFactory() {
+		
+		return this.testStepHandlerFactory;
+	}
+	
 	@Override
 	public Object getBeanByName(String beanName) {
-		// TODO Auto-generated method stub
+		
 		return null;
 	}
 	
@@ -268,5 +320,13 @@ public class FunnyConfig implements IConfiguration {
 
 	public void setFunnyMethodFactory(IFunnyTestMethodFactory funnyMethodFactory) {
 		this.funnyMethodFactory = funnyMethodFactory;
+	}
+
+	public ITestStepHandlerFactory getTestStepFactory() {
+		return testStepHandlerFactory;
+	}
+
+	public void setTestStepFactory(ITestStepHandlerFactory testStepFactory) {
+		this.testStepHandlerFactory = testStepFactory;
 	}
 }

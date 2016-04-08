@@ -74,4 +74,12 @@ public class ObjectUtil {
 		
 		return new java.sql.Date(date.getTime());
 	}
+	
+	public static boolean isNull(Object o){
+		return o==null ? true : false;
+	}
+	
+	public static boolean notNull(Object o) {
+		return o!=null ? true : false;
+	}
 }

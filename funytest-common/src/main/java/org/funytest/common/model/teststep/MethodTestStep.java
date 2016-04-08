@@ -2,7 +2,6 @@ package org.funytest.common.model.teststep;
 
 import java.util.List;
 
-import org.funytest.common.exception.TestStepException;
 import org.funytest.common.internal.handler.ITestStepHandler;
 import org.funytest.common.model.TestExecuteMethod;
 import org.funytest.common.utils.Constant;
@@ -26,11 +25,8 @@ public class MethodTestStep implements ITestStep {
 	 * 代理设计模式，将handler交给method，代理执行
 	 */
 	@Override
-	public void execute(ITestStepHandler handler) throws TestStepException {
-		
-		for (TestExecuteMethod method : methods){
-			handler.handle(method);
-		}
+	public void execute(ITestStepHandler handler) throws Exception {
+		handler.handle(this);
 	}
 
 	public List<TestExecuteMethod> getMethods() {

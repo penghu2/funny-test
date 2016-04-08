@@ -1,5 +1,6 @@
 package org.funytest.common.internal;
 
+import org.funytest.common.internal.handler.ITestStepHandlerFactory;
 import org.funytest.common.model.TestContext;
 
 /**
@@ -8,5 +9,10 @@ import org.funytest.common.model.TestContext;
  */
 public interface ITestRunner {
 	
-	public void run(TestContext context);
+	public void run(TestContext context) throws Exception;
+	
+	/**
+	 * 初始化模板
+	 */
+	public void initStepHandlerFactory(ITestStepHandlerFactory handlerFactory);
 }

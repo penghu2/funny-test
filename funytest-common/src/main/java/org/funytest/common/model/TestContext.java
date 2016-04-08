@@ -1,5 +1,7 @@
 package org.funytest.common.model;
 
+import java.util.Map;
+
 import org.funytest.common.internal.IFunyTestCase;
 
 /**
@@ -12,7 +14,11 @@ public class TestContext {
 	/* 测试实例 */
 	public IFunyTestCase testInstance;
 	
+	/* 测试case信息 */
 	private TestCase testcase;
+	
+	/* 用于存储上下文信息，处理过程中的任何参数均可以存储在这里 */
+	private Map<String, Object> context;
 	
 	public TestContext(){
 		
@@ -36,5 +42,13 @@ public class TestContext {
 
 	public void setTestcase(TestCase testcase) {
 		this.testcase = testcase;
+	}
+
+	public Map<String, Object> getContext() {
+		return context;
+	}
+
+	public void setContext(Map<String, Object> context) {
+		this.context = context;
 	}
 }
