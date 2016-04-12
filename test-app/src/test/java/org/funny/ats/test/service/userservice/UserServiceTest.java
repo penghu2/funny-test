@@ -15,8 +15,7 @@ public class UserServiceTest extends FunyTestEngine {
 	private UserService userService;
 	
 	@Test(dataProvider = "FunyTestDataProvider")
-	public void test(TestContext context){
-		String caseId = context.getTestcase().getId();
+	public void test(String caseId, TestContext context){
 		String caseDesc = context.getTestcase().getDesc();
 		
 		Object bean = this.getBean("userDaoImpl");

@@ -1,6 +1,8 @@
 package org.funytest.common.internal.dataprovider;
 
+import java.io.ByteArrayInputStream;
 import java.io.File;
+import java.io.IOException;
 import java.lang.reflect.Method;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -18,6 +20,7 @@ import org.funytest.common.model.TestCase;
 import org.funytest.common.model.TestContext;
 import org.funytest.common.model.teststep.ITestStep;
 import org.funytest.common.utils.CollectionUtil;
+import org.funytest.common.utils.FileUtils;
 
 /**
  * 默认的xml解析datarpovider
@@ -27,6 +30,8 @@ import org.funytest.common.utils.CollectionUtil;
 public class DefaultXmlDataProvider implements IDataProvider, Iterator<Object> {
 
 	private Document document;
+	
+	private String configFilePath;
 	
 	/* testcase节点集合 */
 	private List<Element> testCaseElements;
@@ -56,14 +61,24 @@ public class DefaultXmlDataProvider implements IDataProvider, Iterator<Object> {
 		SAXReader reader = new SAXReader();
 		
 		try {
-			document = reader.read(new File(configFilePath));
-			
+			File f = new File(configFilePath);
+			document = reader.read(f);
+				
 			//获取根节点元素对象  
 	        Element root = document.getRootElement(); 
 	        
-	        testCaseElements = root.elements("test-case");
-	        
+	        swapMaps = new HashMap<String, String>();
 	        initCommonProperties(swapMaps, root.element("properties"));
+	        
+	        this.configFilePath = configFilePath;
+	        
+	        //执行全局变量替换
+	        String newFileStr = replaceGloblProperties();
+	        if (newFileStr != null) {
+	        	document = reader.read(new ByteArrayInputStream(newFileStr.getBytes()));
+	        }
+	        
+	        testCaseElements = document.getRootElement().elements("test-case");
 	        
 		} catch (DocumentException e) {
 			e.printStackTrace();
@@ -80,7 +95,7 @@ public class DefaultXmlDataProvider implements IDataProvider, Iterator<Object> {
 	 */
 	private void initCommonProperties(Map<String, String> map, Element properties){
 		
-		if(map==null) map = new HashMap<String, String>();
+		if(map==null) return;
 		
 		//为空就返回
 		if (properties == null) return;
@@ -116,18 +131,10 @@ public class DefaultXmlDataProvider implements IDataProvider, Iterator<Object> {
 		TestContext context = new TestContext((IFunyTestCase) this.instance);
 		convert(element, context);
 		
-		Object[] res = new Object[1];
-		res[0] = context;
+		Object[] res = new Object[2];
+		res[0] = context.getTestcase().getId();
+		res[1] = context;
 		return res;
-	}
-	
-	/**
-	 * 
-	 * @param ele  "test-case" 结点
-	 * @param rep  "里面会有需要替换的值"
-	 */
-	private void replace(Element ele, Map<String, String> rep){
-		
 	}
 	
 	/**
@@ -148,6 +155,7 @@ public class DefaultXmlDataProvider implements IDataProvider, Iterator<Object> {
 		
 		initCommonProperties(swap, pro);
 		
+		/* 在转换之前需要做替换动作，变量的支持 */
 		replace(tkelement, swap);
 		
 		List<Element> alignlist  = tkelement.elements("test-align");
@@ -205,6 +213,33 @@ public class DefaultXmlDataProvider implements IDataProvider, Iterator<Object> {
 		return path;
 	}
 
+	/**
+	 * 
+	 * @param ele  "test-case" 结点
+	 * @param rep  "里面会有需要替换的值"
+	 */
+	private void replace(Element ele, Map<String, String> rep){
+		
+	}
+	
+	/**
+	 * 全局变量替换，使用正则文本替换
+	 */
+	private String replaceGloblProperties(){
+		if (this.swapMaps == null || this.swapMaps.size() == 0) return null;
+		
+		try {
+			String configstr = FileUtils.readFile(configFilePath);
+			
+			for (String key : this.swapMaps.keySet()){
+				configstr = configstr.replaceAll("\\$\\{"+key+"\\}", this.swapMaps.get(key));	
+			}
+			return configstr;
+						
+		} catch (IOException e) {
+			return null;
+		}
+	}
 
 	public void remove() {
 		
@@ -216,5 +251,53 @@ public class DefaultXmlDataProvider implements IDataProvider, Iterator<Object> {
 
 	public void setTestStepFactory(TestStepFactory testStepFactory) {
 		this.testStepFactory = testStepFactory;
+	}
+	
+	public Document getDocument() {
+		return document;
+	}
+
+	public void setDocument(Document document) {
+		this.document = document;
+	}
+
+	public String getConfigFilePath() {
+		return configFilePath;
+	}
+
+	public void setConfigFilePath(String configFilePath) {
+		this.configFilePath = configFilePath;
+	}
+
+	public List<Element> getTestCaseElements() {
+		return testCaseElements;
+	}
+
+	public void setTestCaseElements(List<Element> testCaseElements) {
+		this.testCaseElements = testCaseElements;
+	}
+
+	public int getReadIndex() {
+		return readIndex;
+	}
+
+	public void setReadIndex(int readIndex) {
+		this.readIndex = readIndex;
+	}
+
+	public Map<String, String> getSwapMaps() {
+		return swapMaps;
+	}
+
+	public void setSwapMaps(Map<String, String> swapMaps) {
+		this.swapMaps = swapMaps;
+	}
+
+	public Object getInstance() {
+		return instance;
+	}
+
+	public void setInstance(Object instance) {
+		this.instance = instance;
 	}
 }

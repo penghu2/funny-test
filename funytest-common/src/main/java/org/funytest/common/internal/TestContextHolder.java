@@ -20,6 +20,10 @@ public class TestContextHolder {
 		return testContext.get();
 	}
 	
+	public static TestContext get(){
+		return testContext.get();
+	}
+	
 	public static void clean(){
 		testContext.set(null);
 	}

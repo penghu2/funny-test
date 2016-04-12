@@ -32,7 +32,7 @@ public class FunnyConfig implements IConfiguration {
 
 	private ITestRunner runner;   						//测试runner
 	private IAnnotationMethodFinder finder;				//注解finder
-	private IDataProvider dataProvider;					//数据驱动
+	//private IDataProvider dataProvider;					//数据驱动
 	private IFunnyTestMethodFactory funnyMethodFactory; //funnymethod工厂类
 	private Properties properties;						//配置属性，对应funny-test.config 文件
 	private Map<String, DataSource> datasourceMap;		//数据源配置器
@@ -65,7 +65,6 @@ public class FunnyConfig implements IConfiguration {
 		initRunner(properties);
 		initFinder(properties);
 		initMethodFactory(properties);
-		initDataProvider(properties);
 		initDataSource(properties, engine);
 		
 	}
@@ -138,17 +137,15 @@ public class FunnyConfig implements IConfiguration {
 	 * @param properties
 	 */
 	@SuppressWarnings("unchecked")
-	protected void initDataProvider(Properties properties){
-		if (ObjectUtil.notNull(this.dataProvider)) return;
+	protected IDataProvider initDataProvider(Properties properties){
 		
 		String className = properties.getProperty("DataProvider");
 		if (StringUtils.isBlank(className)){
-			this.dataProvider = new DefaultXmlDataProvider();
-			return;
+			return new DefaultXmlDataProvider();
 		}
 		
 		Class<IDataProvider> cls = (Class<IDataProvider>) ClassHelper.forName(className);
-		this.dataProvider = ClassHelper.newInstance(cls);
+		return ClassHelper.newInstance(cls);
 	}
 	
 	/**
@@ -260,13 +257,13 @@ public class FunnyConfig implements IConfiguration {
 		this.runner = runner;
 	}
 
-	public void setDataProvider(IDataProvider dataProvider) {
-		this.dataProvider = dataProvider;
-	}
-
-	public IDataProvider getDataProvider() {
-	
-		return dataProvider;
+	/**
+	 * 获取数据驱动对象，采用工厂模式，这里必须每次调用生产一个新的实例
+	 * 以支持多线程程序
+	 */
+	public synchronized IDataProvider getDataProvider() {
+		
+		return initDataProvider(properties);
 	}
 	
 	public IFunnyTestMethodFactory getFunnyMethodFactory(){

@@ -8,9 +8,12 @@ import java.lang.reflect.Method;
  * @author hupeng
  */
 public class DefaultFactory implements IFunnyTestMethodFactory {
-
+	
+	/**
+	 * 
+	 */
 	public IFunnyTestMethod getTestMethod(Method m, Class<? extends Annotation> cls) {
-		// TODO Auto-generated method stub
+		
 		return null;
 	}
 

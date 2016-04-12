@@ -4,9 +4,12 @@ import java.io.IOException;
 import java.util.Map;
 
 import org.apache.http.HttpException;
+import org.funytest.common.internal.TestContextHolder;
+import org.funytest.common.internal.checker.HttpChecker;
 import org.funytest.common.model.HttpEntry;
 import org.funytest.common.model.HttpEntry.MethodType;
 import org.funytest.common.model.HttpTestInfo;
+import org.funytest.common.model.TestContext;
 import org.funytest.common.model.teststep.HttpTestStep;
 import org.funytest.common.model.teststep.ITestStep;
 import org.funytest.common.utils.Constant;
@@ -15,12 +18,16 @@ import org.funytest.common.utils.http.ResponseStatus;
 
 public class HttpTestStepHandler implements ITestStepHandler {
 	
+	public static final String CHECK_KEY = "http-uncheck";
+	
 	private HttpClientExt http;
+	
+	private HttpChecker checker;
 	
 	@Override
 	public void handle(ITestStep step) throws Exception {
 		/* 初始化http */
-		initHttp();
+		initHttpAndChecker();
 		
 		/* 只处理http类型的 */
 		if (!step.getType().equals(Constant.STEP_TYPE_HTTP)) return;
@@ -34,11 +41,28 @@ public class HttpTestStepHandler implements ITestStepHandler {
 		try {
 			ResponseStatus responseStatus = invoke(entry);
 			httpTestInfo.setActualResponseStatus(responseStatus);
+			
+			if (httpTestInfo.needCheck){
+				initUnCheckInfo(httpTestInfo);
+				checker.check();
+			}
 		} catch (HttpException e){
 			throw e;
 		} catch (IOException e) {
 			throw e;
 		}
+	}
+	
+	/**
+	 * 初始化check信息
+	 * @param context
+	 * @param httpTestInfo
+	 */
+	protected void initUnCheckInfo(HttpTestInfo httpTestInfo) {
+		TestContext context = TestContextHolder.getTestContext();
+		Map<String, Object> checkMap = context.getContextWithInit();
+		
+		checkMap.put(CHECK_KEY, httpTestInfo);
 	}
 	
 	/**
@@ -70,9 +94,13 @@ public class HttpTestStepHandler implements ITestStepHandler {
 		return null;
 	}
 	
-	private void initHttp(){
+	protected void initHttpAndChecker(){
 		if (http == null){
 			http = HttpClientExt.getInstance();
+		}
+		
+		if (checker == null) {
+			checker = new HttpChecker();
 		}
 	}
 
@@ -83,5 +111,4 @@ public class HttpTestStepHandler implements ITestStepHandler {
 	public void setHttp(HttpClientExt http) {
 		this.http = http;
 	}
-
 }

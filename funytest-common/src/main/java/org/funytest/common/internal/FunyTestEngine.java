@@ -8,10 +8,12 @@ import java.util.List;
 import java.util.Map;
 
 import org.dom4j.DocumentException;
+import org.funytest.common.exception.CheckFailException;
 import org.funytest.common.internal.method.IFunnyTestMethod;
 import org.funytest.common.internal.method.IFunnyTestMethodFactory;
 import org.funytest.common.model.FunnyConfig;
 import org.funytest.common.model.TestContext;
+import org.funytest.common.utils.ExceptionUtil;
 import org.springframework.test.context.testng.AbstractTestNGSpringContextTests;
 import org.testng.Assert;
 import org.testng.annotations.BeforeClass;
@@ -46,8 +48,13 @@ public class FunyTestEngine extends AbstractTestNGSpringContextTests implements 
 		try {
 			this.config.getTestRunner().run(context);
 		} catch (Exception e) {
-			Assert.fail(e.getMessage());
-		}
+			
+			if (e instanceof CheckFailException){
+				Assert.fail(((CheckFailException)e).getFailMessage());
+			}
+			
+			Assert.fail(ExceptionUtil.getStackTrace(e));
+		} 
 		
 	}
 	
@@ -76,7 +83,7 @@ public class FunyTestEngine extends AbstractTestNGSpringContextTests implements 
 		//扫描注解方法，并放置到配置中
 		initAnnotationMethods();
 	}
-		
+	
 	private void initAnnotationMethods(){
 		
 		IAnnotationMethodFinder finder = this.config.getAnnotationFinder();
@@ -125,8 +132,6 @@ public class FunyTestEngine extends AbstractTestNGSpringContextTests implements 
 	}
 	
 	/*==========================[待实现区域]=============================*/
-
-	
 	public IConfiguration getConfig(){
 		return new FunnyConfig(configfile);
 	}

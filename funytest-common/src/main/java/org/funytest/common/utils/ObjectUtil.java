@@ -1,5 +1,6 @@
 package org.funytest.common.utils;
 
+import java.lang.reflect.Method;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -8,7 +9,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.testng.internal.ClassHelper;
 
 public class ObjectUtil {
-
+	
 	public static Object getObject(String type, String value) throws ParseException{
 		
 		if (StringUtils.isBlank(type)) return value;
@@ -58,6 +59,15 @@ public class ObjectUtil {
 		
 		case "java.sql.Date":
 			return praseSqlDate(value);
+		
+		case "Object":
+			return value;
+		
+		case "boolean":
+			return "true".equals(true)?true:false;
+		
+		case "Boolean":
+			return Boolean.valueOf(value);
 		}
 		
 		return null;
@@ -82,4 +92,31 @@ public class ObjectUtil {
 	public static boolean notNull(Object o) {
 		return o!=null ? true : false;
 	}
+	
+	public static Method getMethod(Class<?> clz, String methodName, Class<?>... parameterTypes){
+		
+		try {
+			Method m = clz.getDeclaredMethod(methodName, parameterTypes);
+			return m;
+		} catch (NoSuchMethodException | SecurityException e) {
+			return getMethodByNameSimple(clz, methodName);
+		}
+	}
+	
+	public static Method getMethodByNameSimple(Class<?> clz, String methodName) {
+		Method[] methods = clz.getDeclaredMethods();
+		
+		for (Method method : methods) {
+			if (method.getName().equals(methodName)) {
+				return method;
+			}
+		}
+		
+		return null;
+	}
+	
+	public static void main(String args[]){
+		System.out.print(int.class.getSimpleName());
+	}
+	
 }

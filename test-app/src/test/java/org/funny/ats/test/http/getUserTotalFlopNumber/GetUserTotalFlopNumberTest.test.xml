@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<test-config>
+	<properties>
+		<baseUrl>http://xin.mogujie.com</baseUrl>
+		<getUserTotalFlopNumberUrl><![CDATA[/jsonp/getUserTotalFlopNumber/1?_=1458565140169&callback=openFanGJ]]></getUserTotalFlopNumberUrl>
+		<sign><![CDATA[GwDnMHQHun%2FKAKx61sbdmUcMmB2XynEG50AAHRxoMaGRe2jLRwhI0kR3joX5hdu0oe%2B0hl%2FLG0hIv13K34fXBw%3D%3D]]></sign>
+	</properties>
+
+	<http id="getUserTotalFlopNumber" method="GET">
+		<url><![CDATA[${baseUrl}${getUserTotalFlopNumberUrl}&sign=${sign}&_did=ghjkuisklioi72]]></url>
+		<headers></headers>
+	</http>
+	
+	<test-case id="TC01" desc="冒烟测试">
+		<test-align>
+			<test-http id="getUserTotalFlopNumber">
+				<params>
+				</params>
+				<check>
+					<status>200</status>
+					<responseBody>
+						return this.check($ResponseStr, 1, SUCCESS, true)
+					</responseBody>
+				</check>
+			</test-http>
+		</test-align>
+	</test-case>
+</test-config>

@@ -1,5 +1,6 @@
 package org.funytest.common.model;
 
+import java.util.HashMap;
 import java.util.Map;
 
 import org.funytest.common.internal.IFunyTestCase;
@@ -48,6 +49,11 @@ public class TestContext {
 		return context;
 	}
 
+	public Map<String, Object> getContextWithInit() {
+		if (context == null) context = new HashMap<String, Object>();
+		return context;
+	}
+	
 	public void setContext(Map<String, Object> context) {
 		this.context = context;
 	}

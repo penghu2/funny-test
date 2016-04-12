@@ -11,11 +11,14 @@ public class HttpTestInfo {
 	
 	private String id;
 	
+	/* 是否需要check */
+	public boolean needCheck;
+	
 	/* http实体类 */
 	private HttpEntry httpEntry;
 	
 	/* 期望的http返回状态 */
-	private String expectHttpStatus;
+	private String expectHttpStatusCode;
 	
 	/* 期望的http返回结果 */
 	private String expectResponseBody;
@@ -40,11 +43,11 @@ public class HttpTestInfo {
 	}
 
 	public String getExpectHttpStatus() {
-		return expectHttpStatus;
+		return expectHttpStatusCode;
 	}
 
 	public void setExpectHttpStatus(String expectHttpStatus) {
-		this.expectHttpStatus = expectHttpStatus;
+		this.expectHttpStatusCode = expectHttpStatus;
 	}
 
 	public String getExpectResponseBody() {
@@ -62,4 +65,14 @@ public class HttpTestInfo {
 	public void setActualResponseStatus(ResponseStatus actualResponseStatus) {
 		this.actualResponseStatus = actualResponseStatus;
 	}
+
+	public boolean isNeedCheck() {
+		return needCheck;
+	}
+
+	public void setNeedCheck(boolean needCheck) {
+		this.needCheck = needCheck;
+	}
+	
+	
 }

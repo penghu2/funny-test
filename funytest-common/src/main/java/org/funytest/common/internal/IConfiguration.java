@@ -40,7 +40,6 @@ public interface IConfiguration {
 	/**
 	 * 数据驱动 set 和 get
 	 */
-	public void setDataProvider(IDataProvider dataProvider);
 	public IDataProvider getDataProvider();
 	
 	public IFunnyTestMethodFactory getFunnyMethodFactory();

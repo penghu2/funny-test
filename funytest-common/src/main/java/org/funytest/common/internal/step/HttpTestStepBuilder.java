@@ -32,7 +32,7 @@ public class HttpTestStepBuilder extends AbstractStepBuilder {
 		/* 寻找对应id的http对象 */
 		Element theHttpElement = null;
 		for (Element httpElement : httpElements){
-			if (httpElement.attribute("id").getValue().equals(id_attr.getValue())){
+			if (httpElement.attribute("id").getValue().trim().equals(id_attr.getValue())){
 				theHttpElement = httpElement;
 				break;
 			}
@@ -49,13 +49,15 @@ public class HttpTestStepBuilder extends AbstractStepBuilder {
 	
 	private HttpTestInfo buildHttpTestInfo(Element testHttpEle, Element httpEle){
 		HttpTestInfo testInfo = new HttpTestInfo();
-		testInfo.setId(testHttpEle.attributeValue("id"));
+		testInfo.setId(testHttpEle.attributeValue("id").trim());
 		
 		/* 更新check信息 */
 		Element checkEle = testHttpEle.element("check");
 		if (checkEle != null) {
 			testInfo.setExpectHttpStatus(checkEle.elementText("status").trim());
 			testInfo.setExpectResponseBody(checkEle.elementText("responseBody").trim());
+			//设置check标志位
+			testInfo.setNeedCheck(true);
 		}
 		
 		HttpEntry httpEntry = buildHttpEntry(httpEle);
