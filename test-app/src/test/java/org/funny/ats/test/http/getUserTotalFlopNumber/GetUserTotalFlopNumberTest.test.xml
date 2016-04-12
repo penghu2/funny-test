@@ -11,13 +11,15 @@
 		<headers></headers>
 	</http>
 	
-	<test-case id="TC01" desc="冒烟测试">
+	<test-case id="TC01" desc="翻牌冒烟测试">
 		<test-align>
 			<test-http id="getUserTotalFlopNumber">
 				<params>
 				</params>
 				<check>
+					<!-- 校验http status code -->
 					<status>200</status>
+					<!-- 校验http返回值 -->
 					<responseBody>
 						return this.check($ResponseStr, 1, SUCCESS, true)
 					</responseBody>

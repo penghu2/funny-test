@@ -1,5 +1,6 @@
 package org.funytest.common.model;
 
+import java.io.Serializable;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
@@ -10,8 +11,10 @@ import org.funytest.common.model.teststep.ITestStep;
  * 测试场景类
  * @author hupeng
  */
-public class TestCase {
+public class TestCase implements Serializable {
 	
+	private static final long serialVersionUID = 1L;
+
 	protected String id;
 	
 	protected String desc;

@@ -131,9 +131,8 @@ public class DefaultXmlDataProvider implements IDataProvider, Iterator<Object> {
 		TestContext context = new TestContext((IFunyTestCase) this.instance);
 		convert(element, context);
 		
-		Object[] res = new Object[2];
-		res[0] = context.getTestcase().getId();
-		res[1] = context;
+		Object[] res = new Object[1];
+		res[0] = context;
 		return res;
 	}
 	

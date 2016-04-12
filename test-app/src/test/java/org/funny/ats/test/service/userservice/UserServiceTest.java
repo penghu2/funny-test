@@ -15,13 +15,12 @@ public class UserServiceTest extends FunyTestEngine {
 	private UserService userService;
 	
 	@Test(dataProvider = "FunyTestDataProvider")
-	public void test(String caseId, TestContext context){
+	public void test(TestContext context){
 		String caseDesc = context.getTestcase().getDesc();
 		
 		Object bean = this.getBean("userDaoImpl");
 		Object dataSource = this.getBean("dataSource");
 		
-		System.out.println(caseId);
 		
 		super.run(context);
 	}

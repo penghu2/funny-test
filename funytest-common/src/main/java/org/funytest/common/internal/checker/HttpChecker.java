@@ -19,8 +19,7 @@ public class HttpChecker extends BaseChecker {
 	/* 正则，匹配是否为函数调用 */
 	Pattern p_func = Pattern.compile("^return (.*)\\((.*)\\)");
 	
-	MethodParser methodParser = new MethodParser();
-	
+	protected MethodParser methodParser = new MethodParser();
 	
 	@Override
 	public String getName() {

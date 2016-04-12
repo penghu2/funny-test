@@ -94,6 +94,9 @@ public class HttpTestStepHandler implements ITestStepHandler {
 		return null;
 	}
 	
+	/**
+	 * 初始化http请求对象 + checker
+	 */
 	protected void initHttpAndChecker(){
 		if (http == null){
 			http = HttpClientExt.getInstance();

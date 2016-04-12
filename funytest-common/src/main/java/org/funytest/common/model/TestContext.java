@@ -1,8 +1,11 @@
 package org.funytest.common.model;
 
+import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.apache.commons.lang3.builder.ToStringBuilder;
+import org.apache.commons.lang3.builder.ToStringStyle;
 import org.funytest.common.internal.IFunyTestCase;
 
 /**
@@ -10,8 +13,10 @@ import org.funytest.common.internal.IFunyTestCase;
  * @author hupeng
  *
  */
-public class TestContext {
+public class TestContext implements Serializable {
 	
+	private static final long serialVersionUID = 1L;
+
 	/* 测试实例 */
 	public IFunyTestCase testInstance;
 	
@@ -56,5 +61,12 @@ public class TestContext {
 	
 	public void setContext(Map<String, Object> context) {
 		this.context = context;
+	}
+	
+	public String toString() { 
+		StringBuffer buffer = new StringBuffer();
+		buffer.append(this.getTestcase().getId()).append("--");
+		buffer.append(this.getTestcase().getDesc());
+		return buffer.toString();
 	}
 }
