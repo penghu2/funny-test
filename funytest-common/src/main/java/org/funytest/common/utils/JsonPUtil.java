@@ -1,7 +1,6 @@
 package org.funytest.common.utils;
 
 import java.util.HashMap;
-import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -16,7 +15,7 @@ import com.alibaba.fastjson.JSONObject;
 public class JsonPUtil {
 	
 	/**
-	 * 
+	 * 解析jsonP函数，获取函数内的字符串
 	 */
 	private static Pattern jsonPPattern = Pattern.compile("^(.+)\\((.+)\\)");
 	
@@ -40,14 +39,4 @@ public class JsonPUtil {
 		return JSON.parseObject(str, HashMap.class);
 	}
 	
-	public static void main(String[] args) {
-		String str = "openFanGJ({\"data\":{\"leftFlopNumber\":1},\"returnCode\":\"SUCCESS\",\"success\":true})";
-		praseToJson(str);
-		
-		HashMap<?, ?> map = praseToMap(str);
-		Map<?, ?> data = (Map<?, ?>) map.get("data");
-		int i = (int)data.get("leftFlopNumber");
-		System.out.println(i);
-		
-	}
 }

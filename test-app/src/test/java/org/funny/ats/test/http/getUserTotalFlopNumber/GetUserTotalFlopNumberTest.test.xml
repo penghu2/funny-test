@@ -3,7 +3,7 @@
 	<properties>
 		<baseUrl>http://xin.mogujie.com</baseUrl>
 		<getUserTotalFlopNumberUrl><![CDATA[/jsonp/getUserTotalFlopNumber/1?_=1458565140169&callback=openFanGJ]]></getUserTotalFlopNumberUrl>
-		<sign><![CDATA[GwDnMHQHun%2FKAKx61sbdmUcMmB2XynEG50AAHRxoMaGRe2jLRwhI0kR3joX5hdu0oe%2B0hl%2FLG0hIv13K34fXBw%3D%3D]]></sign>
+		<sign>return org.funny.ats.test.utils.SignUtil.getSign()</sign>
 	</properties>
 
 	<http id="getUserTotalFlopNumber" method="GET">

@@ -2,6 +2,8 @@ package org.funytest.common.internal.checker;
 
 import java.io.UnsupportedEncodingException;
 import java.lang.reflect.InvocationTargetException;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -11,16 +13,11 @@ import org.funytest.common.internal.method.MethodWrapper;
 import org.funytest.common.model.HttpTestInfo;
 import org.funytest.common.model.TestContext;
 import org.funytest.common.utils.ExceptionUtil;
-import org.funytest.common.utils.MethodParser;
+import org.funytest.common.utils.MethodWrapperHelper;
 import org.funytest.common.utils.http.ResponseStatus;
 
 public class HttpChecker extends BaseChecker {
-	
-	/* 正则，匹配是否为函数调用 */
-	Pattern p_func = Pattern.compile("^return (.*)\\((.*)\\)");
-	
-	protected MethodParser methodParser = new MethodParser();
-	
+		
 	@Override
 	public String getName() {
 		
@@ -46,41 +43,25 @@ public class HttpChecker extends BaseChecker {
 	protected void checkResponseContent(HttpTestInfo testInfo) throws CheckFailException {
 		
 		String expectResponseBody = testInfo.getExpectResponseBody();
-		Matcher m = p_func.matcher(expectResponseBody.trim());
-		if (m.find())
+		
+		Map<String, String> val = new HashMap<String, String>();
+		if (MethodWrapperHelper.getMehtodInfo(expectResponseBody, val))
 		{	
 			//获取函数信息
-			String func_info = m.group(1);
+			String func_info = val.get(MethodWrapperHelper.FUNC_KEY);
 			//获取参数信息
-			String params_info = m.group(2);
-			
-			checkResponseContentByMethod(func_info, params_info, testInfo);
+			String params_info = val.get(MethodWrapperHelper.PARAM_KEY);
+			String[] params_infos = params_info.split(",");
+			replace(params_infos, testInfo.getActualResponseStatus());
+			MethodWrapper methodW = MethodWrapperHelper.getMethodWrapper(func_info, params_infos);
+			try {
+				methodW.invoke();
+			} catch (InvocationTargetException e) {
+				
+				throw new CheckFailException(ExceptionUtil.getStackTrace(e.getTargetException()));
+			}
 		}
 		
-	}
-	
-	/**
-	 * 通过method查看
-	 * @param func_info
-	 * @param params_info
-	 * @param testInfo
-	 * @throws CheckFailException
-	 * @throws InvocationTargetException 
-	 */
-	private void checkResponseContentByMethod(String func_info, String params_info, HttpTestInfo testInfo) throws CheckFailException {
-
-		//对于参数信息中的特殊字符需要替换掉
-		String[] params_infos = params_info.split(",");
-		replace(params_infos, testInfo.getActualResponseStatus());
-		
-		MethodWrapper methodW = methodParser.parse(func_info, params_infos);
-		
-		try {
-			methodW.invoke();
-		} catch (InvocationTargetException e) {
-			
-			throw new CheckFailException(ExceptionUtil.getStackTrace(e.getTargetException()));
-		}
 	}
 	
 	/**

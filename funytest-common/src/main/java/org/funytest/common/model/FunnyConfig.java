@@ -93,7 +93,7 @@ public class FunnyConfig implements IConfiguration {
 	public void initDataSource(Properties properties, FunyTestEngine engine){
 		datasourceMap = new HashMap<>();
 		
-		String dataSourcesStr = properties.getProperty("ds.list").trim();
+		String dataSourcesStr = properties.getProperty("ds.list");
 		if (StringUtils.isBlank(dataSourcesStr)) return;
 		
 		/* 按照逗号分隔 */

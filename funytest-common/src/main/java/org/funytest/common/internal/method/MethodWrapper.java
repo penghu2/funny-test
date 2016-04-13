@@ -8,7 +8,7 @@ import java.lang.reflect.Method;
  */
 public class MethodWrapper {
 	
-	private Object instance;
+	private Object instance = null;
 	
 	private Class<?> cls;
 	

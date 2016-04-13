@@ -3,6 +3,7 @@ package org.funytest.common.internal.dataprovider;
 import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.IOException;
+import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -15,12 +16,14 @@ import org.dom4j.Element;
 import org.dom4j.io.SAXReader;
 import org.funytest.common.internal.IConfiguration;
 import org.funytest.common.internal.IFunyTestCase;
+import org.funytest.common.internal.method.MethodWrapper;
 import org.funytest.common.internal.step.TestStepFactory;
 import org.funytest.common.model.TestCase;
 import org.funytest.common.model.TestContext;
 import org.funytest.common.model.teststep.ITestStep;
 import org.funytest.common.utils.CollectionUtil;
 import org.funytest.common.utils.FileUtils;
+import org.funytest.common.utils.MethodWrapperHelper;
 
 /**
  * 默认的xml解析datarpovider
@@ -106,8 +109,32 @@ public class DefaultXmlDataProvider implements IDataProvider, Iterator<Object> {
 			String name = element.getName();
 			String text = element.getText();
 			
+			/* 执行替换逻辑 */
+			text = propertiesReplace(text);
+			
 			map.put(name, text);
 		}
+	}
+	
+	/**
+	 * 属性执行函数替换
+	 * @param text
+	 * @return
+	 */
+	private String propertiesReplace(String text) {
+		//长度小于10肯定就不是接口调用
+		if (text.length() < 10) return text;
+		
+		if (MethodWrapperHelper.isMethodInvoke(text)) {
+			MethodWrapper method = MethodWrapperHelper.getMethodWrapper(text);
+			try {
+				text = (String) method.invoke();
+			} catch (InvocationTargetException e) {
+				return text;
+			}
+		}
+		
+		return text;
 	}
 	
 	public synchronized boolean hasNext() {

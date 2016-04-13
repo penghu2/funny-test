@@ -23,7 +23,6 @@ public class GetUserTotalFlopNumberTest extends FunyTestEngine {
 	}
 	
 	/**
-	 * 
 	 * @param responseStr  
 	 * @param expect
 	 * @throws CheckFailException
