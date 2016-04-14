@@ -3,6 +3,7 @@ package org.funytest.common.internal.checker;
 import org.funytest.common.exception.CheckFailException;
 import org.funytest.common.internal.TestContextHolder;
 import org.funytest.common.model.TestContext;
+import org.funytest.common.utils.LogUtils;
 
 /**
  * checker基类，定义check 规范 和 通用方法
@@ -22,9 +23,11 @@ public abstract class BaseChecker {
 		TestContext context = TestContextHolder.getTestContext();
 		
 		try {
+			LogUtils.info("begin check");
 			check(context);
 		} finally {
 			cleanCheckInfo(context);
+			LogUtils.info("end check");
 		}
 	}
 	

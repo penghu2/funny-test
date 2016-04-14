@@ -6,7 +6,7 @@ import java.util.Map;
  * @author xiuzhu
  *
  */
-public class HttpEntry {
+public class HttpEntry extends BaseModel{
 	
 	public enum MethodType{
 		GET, POST;

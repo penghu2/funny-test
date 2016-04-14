@@ -15,19 +15,25 @@ public class LogUtils {
 	private static Logger error_logger = Logger.getLogger("funny-test-error-log");
 	
 	
-	public void info(String message){
+	public static void info(String message){
 		if (info_logger.isInfoEnabled()){
 			info_logger.info(message);
 		}
 	}
 	
-	public void warn(String message){
+	public static void printFlag(){
+		if (info_logger.isInfoEnabled()){
+			info_logger.info("****************************************************");
+		}
+	}
+	
+	public static void warn(String message){
 		if (info_logger.isEnabledFor(Priority.WARN)){
 			info_logger.warn(message);
 		}
 	}
 	
-	public void error(String message){
+	public static void error(String message){
 		if (info_logger.isEnabledFor(Priority.ERROR)){
 			info_logger.error(message);
 		}

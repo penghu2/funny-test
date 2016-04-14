@@ -13,6 +13,7 @@ import org.funytest.common.internal.method.MethodWrapper;
 import org.funytest.common.model.HttpTestInfo;
 import org.funytest.common.model.TestContext;
 import org.funytest.common.utils.ExceptionUtil;
+import org.funytest.common.utils.LogUtils;
 import org.funytest.common.utils.MethodWrapperHelper;
 import org.funytest.common.utils.http.ResponseStatus;
 
@@ -41,7 +42,7 @@ public class HttpChecker extends BaseChecker {
 	 * @throws CheckFailException
 	 */
 	protected void checkResponseContent(HttpTestInfo testInfo) throws CheckFailException {
-		
+		LogUtils.info("check http response");
 		String expectResponseBody = testInfo.getExpectResponseBody();
 		
 		Map<String, String> val = new HashMap<String, String>();
@@ -96,6 +97,7 @@ public class HttpChecker extends BaseChecker {
 	 */
 	protected void checkHttpStatusCode(HttpTestInfo testInfo) throws CheckFailException {
 		//开始check
+		LogUtils.info("check http status code");
 		String expectHttpStatus = testInfo.getExpectHttpStatus();
 		if (expectHttpStatus != null) return;
 		

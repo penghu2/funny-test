@@ -84,5 +84,25 @@ public class ResponseStatus {
 	public void setResponseBody(String responseBody) {
 		this.responseBody = responseBody;
 	}
+	
+	public String toString() {
+		StringBuffer buffer = new StringBuffer();
+		
+		buffer.append("{");
+		{
+			buffer.append("\r\n");
+			buffer.append("encoding=").append(encoding).append("\r\n");
+			buffer.append("statusCode=").append(statusCode).append("\r\n");
+			buffer.append("contentType=").append(contentType).append("\r\n");
+			try {
+				buffer.append("contentString=").append(getContent()).append("\r\n");
+			} catch (UnsupportedEncodingException e) {
+				e.printStackTrace();
+			}
+		}
+		buffer.append("}");
+		
+		return buffer.toString();
+	}
  
 }

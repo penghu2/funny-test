@@ -6,6 +6,7 @@ import org.funytest.common.internal.handler.ITestStepHandlerFactory;
 import org.funytest.common.model.TestCase;
 import org.funytest.common.model.TestContext;
 import org.funytest.common.model.teststep.ITestStep;
+import org.funytest.common.utils.LogUtils;
 
 /**
  * 测试模板类
@@ -25,7 +26,8 @@ public abstract class AbstractTestTemplate {
 	 * @throws Exception 
 	 */
 	public void run(TestContext context) throws Exception{
-		
+		LogUtils.printFlag();
+		LogUtils.info("begin test context : [" + context.toString() + "]");
 		/**
 		 *  设置testStep工厂类
 		 */
@@ -37,11 +39,15 @@ public abstract class AbstractTestTemplate {
 		List<TestCase.TestAlign> aligns = testcase.getTestAligns();
 		
 		for (TestCase.TestAlign align : aligns) {
-
+			LogUtils.info("begin test align : " + align.getOrder());
+			
 			this.runSteps(align.getSteps());
+			
+			LogUtils.info("test align success : " + align.getOrder());
 		}
 		
-		
+		LogUtils.info("test context test success : [" + context.toString() + "]");
+		LogUtils.printFlag();
 	}
 	
 	/**

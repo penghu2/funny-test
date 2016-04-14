@@ -15,6 +15,7 @@
 		<test-align>
 			<test-http id="getUserTotalFlopNumber">
 				<params>
+					<sign>return org.funny.ats.test.utils.SignUtil.getSign()</sign>
 				</params>
 				<check>
 					<!-- 校验http status code -->

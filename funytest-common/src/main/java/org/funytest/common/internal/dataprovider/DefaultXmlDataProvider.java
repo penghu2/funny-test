@@ -234,9 +234,9 @@ public class DefaultXmlDataProvider implements IDataProvider, Iterator<Object> {
 		
 		String filename = cls.getSimpleName() + "." + m.getName() + ".xml";
 		
-		String path = cls.getResource(filename).getPath();
+		String path = cls.getResource("").getPath();
 			
-		return path;
+		return path+filename;
 	}
 
 	/**

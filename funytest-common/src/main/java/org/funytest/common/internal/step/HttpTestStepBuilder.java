@@ -13,6 +13,7 @@ import org.funytest.common.model.HttpEntry;
 import org.funytest.common.model.HttpTestInfo;
 import org.funytest.common.model.teststep.HttpTestStep;
 import org.funytest.common.model.teststep.ITestStep;
+import org.funytest.common.utils.MethodWrapperHelper;
 
 public class HttpTestStepBuilder extends AbstractStepBuilder {
 
@@ -47,6 +48,12 @@ public class HttpTestStepBuilder extends AbstractStepBuilder {
 		return step;
 	}
 	
+	/**
+	 * 构造HttpTestStep
+	 * @param testHttpEle   xml "test-http" 标签节点
+	 * @param httpEle
+	 * @return
+	 */
 	private HttpTestInfo buildHttpTestInfo(Element testHttpEle, Element httpEle){
 		HttpTestInfo testInfo = new HttpTestInfo();
 		testInfo.setId(testHttpEle.attributeValue("id").trim());
@@ -67,7 +74,10 @@ public class HttpTestStepBuilder extends AbstractStepBuilder {
 			Map<String, Object> params = new HashMap<String, Object>();
 			for (Iterator<?> it=paramsEle.elementIterator();it.hasNext();) {
 				Element item = (Element) it.next();
-				params.put(item.getName(), item.getTextTrim());
+				String text = item.getTextTrim();
+				//支持接口调用
+				text = MethodWrapperHelper.doJudgeAndReplace(text);
+				params.put(item.getName(), text);
 			}
 			httpEntry.setParams(params);
 		}
@@ -77,6 +87,11 @@ public class HttpTestStepBuilder extends AbstractStepBuilder {
 		return testInfo;
 	}
 
+	/**
+	 * 根据http节点构造httpEntry
+	 * @param httpEle xml文件中的"http"节点
+	 * @return
+	 */
 	private HttpEntry buildHttpEntry(Element httpEle){
 		HttpEntry httpEntry = new HttpEntry();
 		httpEntry.setId(httpEle.attributeValue("id"));

@@ -1,5 +1,6 @@
 package org.funytest.common.utils;
 
+import java.lang.reflect.InvocationTargetException;
 import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -75,5 +76,40 @@ public class MethodWrapperHelper {
 		}
 		
 		return null;
+	}
+	
+	/**
+	 * 执行接口调用
+	 * @param text
+	 * @return
+	 */
+	public static Object invokeMethodWrapperByText(String text) {
+
+		MethodWrapper method = MethodWrapperHelper.getMethodWrapper(text);
+		try {
+			return method.invoke();
+		} catch (InvocationTargetException e) {
+			return null;
+		}		
+	}
+	
+	/**
+	 * 判断 + 替换
+	 * 判断是否为接口调用，如果是接口调用，则执行接口调用，用返回结果替换
+	 * @param text
+	 * @return
+	 */
+	public static String doJudgeAndReplace(String text){
+		
+		if (MethodWrapperHelper.isMethodInvoke(text)) {
+			MethodWrapper method = MethodWrapperHelper.getMethodWrapper(text);
+			try {
+				return String.valueOf(method.invoke());
+			} catch (InvocationTargetException e) {
+				return text;
+			}	
+		}
+		
+		return text;
 	}
 }

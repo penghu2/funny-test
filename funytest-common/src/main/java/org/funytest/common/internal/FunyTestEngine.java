@@ -14,6 +14,7 @@ import org.funytest.common.internal.method.IFunnyTestMethodFactory;
 import org.funytest.common.model.FunnyConfig;
 import org.funytest.common.model.TestContext;
 import org.funytest.common.utils.ExceptionUtil;
+import org.funytest.common.utils.LogUtils;
 import org.springframework.test.context.testng.AbstractTestNGSpringContextTests;
 import org.testng.Assert;
 import org.testng.annotations.BeforeClass;
@@ -73,6 +74,7 @@ public class FunyTestEngine extends AbstractTestNGSpringContextTests implements 
 	 */
 	@BeforeClass
 	public void init(){
+		LogUtils.info("funny-test is starting ......");
 		
 		initConfig();
 		/* 初始化变量 */
@@ -82,6 +84,8 @@ public class FunyTestEngine extends AbstractTestNGSpringContextTests implements 
 		
 		//扫描注解方法，并放置到配置中
 		initAnnotationMethods();
+		
+		LogUtils.info("funny-test start success !!!");
 	}
 	
 	private void initAnnotationMethods(){
